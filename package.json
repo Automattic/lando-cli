@@ -136,7 +136,7 @@
     "cli-table3": "^0.5.1",
     "copy-dir": "^0.4.0",
     "dayjs": "^1.8.25",
-    "dockerode": "^2.4.2",
+    "dockerode": "^3.3.4",
     "github": "^12.0.0",
     "glob": "^7.1.3",
     "inquirer": "^6.2.1",
