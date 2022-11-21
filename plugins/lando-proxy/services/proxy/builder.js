@@ -10,7 +10,7 @@ const getProxy = ({proxyCommand, proxyPassThru, proxyDomain, userConfRoot, versi
   return {
     services: {
       proxy: {
-        image: 'ghcr.io/automattic/vip-container-images/traefik_openssl:2.8',
+        image: 'ghcr.io/automattic/vip-container-images/traefik_openssl:latest',
         command: proxyCommand.join(' '),
         environment: {
           LANDO_APP_PROJECT: '_lando_',
