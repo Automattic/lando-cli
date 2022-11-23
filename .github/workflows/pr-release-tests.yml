@@ -48,6 +48,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     needs:
       - package
+    if: ${{ secrets[matrix.certificate-password] && secrets[matrix.certificate-data] }}
     env:
       TERM: xterm
     strategy:
