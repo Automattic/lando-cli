@@ -63,7 +63,10 @@ module.exports = lando => {
   const caProject = `landocasetupkenobi38ahsoka${lando.config.instance}`;
   const sshDir = path.join(lando.config.home, '.ssh');
   // Ensure some dirs exist before we start
-  _.forEach([caDir, sshDir], dir => mkdirp.sync(dir));
+  mkdirp.sync(caDir);
+  if (lando.config.home) {
+    mkdirp.sync(sshDir);
+  }
 
   // Make sure we have a host-exposed root ca if we don't already
   // NOTE: we don't run this on the caProject otherwise infinite loop happens!
