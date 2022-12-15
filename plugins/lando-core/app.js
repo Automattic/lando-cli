@@ -115,6 +115,9 @@ module.exports = (app, lando) => {
 
   // Assess our key situation so we can warn users who may have too many
   app.events.on('post-init', () => {
+    if (!lando.config.home) {
+      return;
+    }
     // Get keys on host
     const sshDir = path.resolve(lando.config.home, '.ssh');
     const keys = _(fs.readdirSync(sshDir))
