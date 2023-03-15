@@ -52,7 +52,7 @@ jobs:
           sed -i "s/report: true.*/report: false/" config.yml
       - name: Package CLI
         run: |
-          yarn add @lando/acquia@^0.5.0 @lando/apache@^0.5.0 @lando/backdrop@^0.5.0 @lando/dotnet@^0.5.0 @lando/drupal@^0.5.0 @lando/elasticsearch@^0.5.0 @lando/go@^0.5.0 @lando/joomla@^0.5.0 @lando/lagoon@^0.5.0 @lando/lamp@^0.5.0 @lando/laravel@^0.5.0 @lando/lemp@^0.5.0 @lando/mariadb@^0.5.0 @lando/mean@^0.5.0 @lando/mongo@^0.5.0 @lando/mssql@^0.5.0 @lando/mysql@^0.5.0 @lando/nginx@^0.5.0 @lando/node@^0.5.0 @lando/pantheon@^0.5.0 @lando/php@^0.5.0 @lando/platformsh@^0.6.0 @lando/postgres@^0.5.0 @lando/python@^0.5.0 @lando/redis@^0.5.0 @lando/ruby@^0.5.0 @lando/solr@^0.5.0 @lando/symfony@^0.5.0 @lando/tomcat@^0.5.0 @lando/varnish@^0.5.0 @lando/wordpress@^0.5.0
+          yarn add @lando/acquia@^0.5.0 @lando/apache@^0.5.0 @lando/backdrop@^0.5.0 @lando/dotnet@^0.5.0 @lando/drupal@^0.5.0 @lando/elasticsearch@^0.5.0 @lando/go@^0.5.0 @lando/joomla@^0.5.0 @lando/lagoon@^0.5.0 @lando/lamp@^0.5.0 @lando/laravel@^0.5.0 @lando/lemp@^0.5.0 @lando/mariadb@^0.5.0 @lando/mean@^0.5.0 @lando/mongo@^0.5.0 @lando/mssql@^0.5.0 @lando/mysql@^0.5.0 @lando/nginx@^0.5.0 @lando/node@^0.5.0 @lando/pantheon@^0.5.0 @lando/php@^0.5.0 @lando/postgres@^0.5.0 @lando/python@^0.5.0 @lando/redis@^0.5.0 @lando/ruby@^0.5.0 @lando/solr@^0.5.0 @lando/symfony@^0.5.0 @lando/tomcat@^0.5.0 @lando/varnish@^0.5.0 @lando/wordpress@^0.5.0
           yarn build:cli
       - name: Replace source CLI with packaged one
         run: sudo mv ./dist/@lando/cli /usr/local/bin/lando
