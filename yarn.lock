@@ -387,15 +387,6 @@
     lodash "^4.17.21"
     tar "^6.1.11"
 
-"@lando/memcached@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@lando/memcached/-/memcached-0.5.0.tgz#e18382ebe2f21e8bea286cf4f09b9a83d22d37b5"
-  integrity sha512-unPtLx+bRz2KdO9jk8msTNndbPWllivdhR8BMnegpbP4rC8hDXy78/UpVLQq5lYHxxhyAyUedE0PJQIYQOwxAA==
-  dependencies:
-    js-yaml "^3.4.6"
-    lodash "^4.17.21"
-    tar "^6.1.11"
-
 "@lando/phpmyadmin@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@lando/phpmyadmin/-/phpmyadmin-0.5.0.tgz#2102d1c26c5c317f2b681683dd6ba0b330fbee5e"
