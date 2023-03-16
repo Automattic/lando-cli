@@ -33,6 +33,7 @@ jobs:
         run: yarn install --prefer-offline --frozen-lockfile --production
       - name: Reset version if needed
         run: |
+          yarn add @lando/argv@^1.1.0
           node ./scripts/dev-version.js
           node ./bin/lando version
       - name: Package into node binary

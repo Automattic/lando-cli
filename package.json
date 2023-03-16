@@ -115,7 +115,6 @@
     ]
   },
   "dependencies": {
-    "@lando/argv": "^1.1.0",
     "@lando/compose": "^0.5.0",
     "@lando/mailhog": "^0.5.0",
     "@lando/phpmyadmin": "^0.5.0",
@@ -143,7 +142,7 @@
     "sudo-block": "^2.0.0",
     "through": "^2.3.8",
     "transliteration": "^2.3.5",
-    "uuid": "^3.2.1",
+    "uuid": "^9.0.0",
     "valid-url": "^1.0.9",
     "winston": "2.4.5",
     "yargonaut": "^1.1.2",
