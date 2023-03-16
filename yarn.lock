@@ -364,11 +364,6 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lando/argv@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@lando/argv/-/argv-1.1.0.tgz#96ba39e6a0498995c7abbbaff1794d71f827cd78"
-  integrity sha512-nBM6Rk1XorQdxad0CJTxDaNKrj+ITUg3u9rZYrOiF1KI5oImBJRBKjwf1EhnktJ63HmLGTq+sZQsR8veJmf1GQ==
-
 "@lando/compose@^0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@lando/compose/-/compose-0.5.0.tgz#e60bc25e0f55c685c1e7e6aca09c801c3bd244ed"

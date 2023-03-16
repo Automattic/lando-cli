@@ -115,7 +115,6 @@
     ]
   },
   "dependencies": {
-    "@lando/argv": "^1.1.0",
     "@lando/compose": "^0.5.0",
     "@lando/mailhog": "^0.5.0",
     "@lando/phpmyadmin": "^0.5.0",
