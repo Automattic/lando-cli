@@ -45,15 +45,15 @@ describe('lando', () => {
   });
 
   describe('#bootstrap', () => {
-    it('should return a lando object with the default config', () => {
-      const lando = new Lando({logLevelConsole: 'warn'});
+    it('should return a lando object with the default config', function() {
+      const lando = new Lando({logLevelConsole: 'warning'});
       return lando.bootstrap().then(lando => {
         lando.config.userConfRoot.should.equal(os.tmpdir());
         lando.config.plugins.should.be.an('array').and.be.empty;
       });
     });
 
-    it('should mix envvars into config with set prefix', () => {
+    it('should mix envvars into config with set prefix', function() {
       process.env.JOURNEY_PRODUCT = 'steveperry';
       process.env.JOURNEY_MODE = 'rocknroll';
       const lando = new Lando({envPrefix: 'JOURNEY'});
@@ -67,7 +67,7 @@ describe('lando', () => {
       });
     });
 
-    it('should mix config files into config', () => {
+    it('should mix config files into config', function() {
       const srcRoot = path.resolve(__dirname, '..');
       // @TODO: the below should be mock-fs instead of the actual FS
       const lando = new Lando({
