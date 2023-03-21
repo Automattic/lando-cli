@@ -57,6 +57,7 @@ describe('env', () => {
 
     it('should return the correct lando-provided path on linux', () => {
       setPlatform('linux');
+      filesystem({'/usr/bin/docker': 'CODEZ'});
       const dockerBinPath = env.getDockerBinPath();
       expect(dockerBinPath).to.equal('/usr/bin');
       resetPlatform();
@@ -64,8 +65,9 @@ describe('env', () => {
 
     it('should return the correct lando-provided path on darwin', () => {
       setPlatform('darwin');
+      filesystem({'/usr/local/bin/docker': 'CODEZ'});
       const dockerBinPath = env.getDockerBinPath();
-      expect(dockerBinPath).to.equal('/usr/bin');
+      expect(dockerBinPath).to.equal('/usr/local/bin');
       resetPlatform();
     });
   });
