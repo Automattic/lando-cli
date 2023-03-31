@@ -4,7 +4,6 @@
 const _ = require('lodash');
 const ip = require('ip');
 const fs = require('fs');
-const mkdirp = require('mkdirp');
 const path = require('path');
 
 // Default env values
@@ -63,9 +62,9 @@ module.exports = lando => {
   const caProject = `landocasetupkenobi38ahsoka${lando.config.instance}`;
   const sshDir = path.join(lando.config.home, '.ssh');
   // Ensure some dirs exist before we start
-  mkdirp.sync(caDir);
+  fs.mkdirSync(caDir, {recursive: true});
   if (lando.config.home) {
-    mkdirp.sync(sshDir);
+    fs.mkdirSync(sshDir, {recursive: true});
   }
 
   // Make sure we have a host-exposed root ca if we don't already
