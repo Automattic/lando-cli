@@ -154,6 +154,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^7.1.1",
     "chai-events": "^0.0.1",
+    "command-line-test": "^1.0.10",
     "coveralls": "^3.0.1",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.9.1",

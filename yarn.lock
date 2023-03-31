@@ -1553,6 +1553,11 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
+command-line-test@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/command-line-test/-/command-line-test-1.0.10.tgz#7897c68076a9cfb6a53e78af069c316b5185ee7d"
+  integrity sha512-osdAsKGgEG457KlkGCMS4dPi7zJPPh8pZURhAmBcS3jO+prfYlQ6K0XagfGRGT1ztxfV2flNfBnGQz7kzHDlew==
+
 commander@2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
