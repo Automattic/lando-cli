@@ -159,7 +159,7 @@
     "eslint-plugin-vue": "^8.0.3",
     "leia-parser": "^0.4.0",
     "mocha": "^4.1.0",
-    "mock-fs": "https://github.com/pirog/mock-fs.git#256-ctxBindingAccess",
+    "mock-fs": "^5.2.0",
     "nyc": "^12.0.1",
     "pkg": "^5.3.1",
     "rimraf": "^3.0.2",
