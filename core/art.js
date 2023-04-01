@@ -359,14 +359,6 @@ exports.shareWait = () => [
 /*
  * Helper to show status of secret toggle
  */
-exports.sudoRun = () => [
-  chalk.red('Lando should never ever ever be run as root...'),
-  chalk.magenta(niceFont('like ever!!!', 'Small Slant')),
-].join(os.EOL);
-
-/*
- * Helper to show status of secret toggle
- */
 exports.tunnel = ({url, phase = 'pre'} = {}) => {
   switch (phase) {
     case 'pre':

@@ -137,7 +137,6 @@
     "semver": "^7.3.8",
     "shelljs": "^0.8.4",
     "string-argv": "0.1.1",
-    "sudo-block": "^2.0.0",
     "through": "^2.3.8",
     "transliteration": "^2.3.5",
     "uuid": "^9.0.0",
