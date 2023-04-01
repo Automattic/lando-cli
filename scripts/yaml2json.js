@@ -5,7 +5,6 @@
 const _ = require('lodash');
 const argv = require('yargs').argv;
 const fs = require('fs-extra');
-const mkdirp = require('mkdirp');
 const Log = require('./../lib/logger');
 const log = new Log({logLevelConsole: 'debug', logName: 'yaml2json'});
 const path = require('path');
@@ -37,7 +36,7 @@ const inputFilePaths = _(inputFiles)
 // Make sure output dir is dialed
 if (!fs.existsSync(outputDir)) {
   log.info('%s does not exists, creating it...', outputDir);
-  mkdirp.sync(outputDir);
+  fs.mkdirSync(outputDir, {recursive: true});
 }
 
 // Finalize inputs and outputs
