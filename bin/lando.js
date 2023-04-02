@@ -59,7 +59,7 @@ if (!hconf[binPath] || (landoConfig.version !== hconf[binPath].version)) {
     }))
     .filter(plugin => fs.existsSync(plugin.manifest))
     .map(plugin => Object.assign(plugin, { // eslint-disable-line
-      manifest: yaml.safeLoad(fs.readFileSync(plugin.manifest)),
+      manifest: yaml.load(fs.readFileSync(plugin.manifest)),
       pjson: fs.existsSync(plugin.pjson) ? require(plugin.pjson) : {},
     }))
     .map(plugin => ({
