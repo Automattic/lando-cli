@@ -339,67 +339,6 @@ exports.secretToggleDenied = (on = false) => [
   '',
 ].join(os.EOL);
 
-/*
- * Sharing under construction
- */
-exports.shareWait = () => [
-  '',
-  chalk.red(niceFont('OFFLINE!!!', 'ANSI Shadow')),
-  '',
-  'localtunnel.me has finally sunsetted it\'s free service. Lando thanks them for their great and free service.',
-  '',
-  'We are hard at work on a new sharing solution but it is not quite ready!',
-  '',
-  'Due to our massive user base we might not be able to offer free sharing to all users.',
-  'So, if you are interested in using our new sharing service we recommend you sponsor at the link below!',
-  chalk.green('https://lando.dev/sponsor'),
-  '',
-].join(os.EOL);
-
-/*
- * Helper to show status of secret toggle
- */
-exports.tunnel = ({url, phase = 'pre'} = {}) => {
-  switch (phase) {
-    case 'pre':
-      return chalk.cyan('About to share your app to a whole new world!');
-    case 'post':
-      return [
-        '',
-        chalk.magenta(niceFont('Connected!!!', 'Small Slant')),
-        'A tunnel to your local Lando app been established.',
-        '',
-        'Here is your public url:',
-        chalk.green(url),
-        '',
-        'Press any key to close the tunnel...',
-      ].join(os.EOL);
-    case 'closed':
-      return chalk.green('Tunnel closed!');
-  }
-};
-
-/*
- * Update available
- */
-exports.updateAvailable = url => [
-  '',
-  chalk.magenta(niceFont('Update Available!!!', 'Small Slant')),
-  '',
-  'Updating helps us provide the best support and saves us tons of time',
-  '',
-  'Use the link below to get the latest and greatest',
-  chalk.green(url),
-  '',
-  `Lando is ${chalk.bold('FREE')} and ${chalk.bold('OPEN SOURCE')} software that relies on contributions`
-    + ` from developers like you!`,
-  'If you like Lando then help us spend more time making, updating and supporting it by contributing at the link below',
-  chalk.green('https://github.com/sponsors/lando'),
-  '',
-  'If you would like to customize the behavior of this message then check out:',
-  chalk.green('https://docs.lando.dev/config/releases.html'),
-].join(os.EOL);
-
 exports.badToken = () => {
   return warningMessage({
     title: 'Invalid Machine Token',
