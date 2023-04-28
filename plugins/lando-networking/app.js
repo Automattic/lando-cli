@@ -14,6 +14,7 @@ module.exports = (app, lando) => {
     const landonet = lando.engine.getNetwork(lando.config.networkBridge);
     // List all our app containers
     return lando.engine.list({project: app.project})
+    .filter(container => !app.isInitOnlyService(container.service))
     // Go through each container
     .map(container => {
       // Define the internal aliae
