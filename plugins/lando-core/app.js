@@ -70,7 +70,8 @@ module.exports = (app, lando) => {
   app.events.on('post-init', () => {
     const buildServices = _.get(app, 'opts.services', app.services);
     app.log.verbose('refreshing certificates...', buildServices);
-    app.events.on('post-start', 9999, () => lando.Promise.each(buildServices, service => {
+    const servicesToRefreshCertificates = buildServices.filter(service => !app.isInitOnlyService(service));
+    app.events.on('post-start', 9999, () => lando.Promise.each(servicesToRefreshCertificates, service => {
       return app.engine.run({
         id: app.getServiceContainerId(service),
         cmd: 'mkdir -p /certs && /helpers/refresh-certs.sh > /certs/refresh.log',
