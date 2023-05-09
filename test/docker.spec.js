@@ -24,6 +24,7 @@ const dummyContainer = (overrides = {}) => {
     {
       Id: '8675309',
       app: 'Death Star',
+      Names: ['/Death Star_Exhaust Port_73'],
       Labels: {
         'com.docker.compose.project': 'Death Star',
         'com.docker.compose.service': 'Exhaust Port',
