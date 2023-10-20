@@ -157,7 +157,7 @@
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-vue": "^8.0.3",
     "leia-parser": "^0.4.0",
-    "mocha": "^4.1.0",
+    "mocha": "^10.0.0",
     "mock-fs": "^5.2.0",
     "nyc": "^12.0.1",
     "pkg": "^5.3.1",
@@ -165,6 +165,6 @@
     "sinon": "^4.3.0",
     "sinon-chai": "^2.14.0",
     "version-bump-prompt": "^4.2.1",
-    "vuepress": "^2.0.0-beta.43"
+    "vuepress": "2.0.0-beta.43"
   }
 }
