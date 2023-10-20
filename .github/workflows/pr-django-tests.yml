@@ -39,11 +39,6 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn install --prefer-offline --frozen-lockfile
 
-      # This block should eventually become use lando/actions-hyperdrive@v2
-      - name: Verify Docker dependencies
-        run: |
-          docker --version | grep "20.10."
-          docker-compose --version | grep "1.29."
       # - name: Install via hyperdrive if above is bad
       - name: Disable usage and error reporting
         run: |
