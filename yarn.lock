@@ -338,10 +338,10 @@
   dependencies:
     lodash "^4.17.21"
 
-"@lando/phpmyadmin@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@lando/phpmyadmin/-/phpmyadmin-0.8.0.tgz#b333fdf0059cfb84415c6886c28bd644ed6884fc"
-  integrity sha512-zVccKnTbDdMNgEPJoK67PypzON+g1osmPeKRdlz8rWr7deWrWUL7IZ3vdHLJdK1FeqQYjWcsdlZRQDPzpXMmfQ==
+"@lando/phpmyadmin@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@lando/phpmyadmin/-/phpmyadmin-0.7.0.tgz#a81a23d57f92cd29ca0c93b71ec68cfe6a0d4b07"
+  integrity sha512-NiuCSMRT6k1iIbAmtxn/536mihimQAdR133EJcFWHd+6tFrAlQrcpjmr66WiOcAwpPsBHBfLB3zomHlJh/bRGA==
   dependencies:
     lodash "^4.17.21"
     semver "^7.3.2"
