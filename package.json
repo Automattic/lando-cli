@@ -115,8 +115,8 @@
     ]
   },
   "dependencies": {
-    "@lando/compose": "^0.5.0",
-    "@lando/mailhog": "^0.5.0",
+    "@lando/compose": "^1.0.0",
+    "@lando/mailhog": "^0.8.0",
     "@lando/phpmyadmin": "^0.5.0",
     "axios": "^0.21.4",
     "bluebird": "^3.4.1",
@@ -142,8 +142,8 @@
     "uuid": "^9.0.0",
     "valid-url": "^1.0.9",
     "winston": "2.4.5",
-    "yargonaut": "^1.1.2",
-    "yargs": "^12.0.5"
+    "yargonaut": "^1.1.4",
+    "yargs": "^16.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -152,14 +152,13 @@
     "chai-as-promised": "^7.1.1",
     "chai-events": "^0.0.1",
     "command-line-test": "^1.0.10",
-    "coveralls": "^3.0.1",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.9.1",
     "eslint-plugin-vue": "^8.0.3",
     "leia-parser": "^0.4.0",
     "mocha": "^10.0.0",
     "mock-fs": "^5.2.0",
-    "nyc": "^12.0.1",
+    "nyc": "^15.1.0",
     "pkg": "^5.3.1",
     "rimraf": "^3.0.2",
     "sinon": "^4.3.0",
