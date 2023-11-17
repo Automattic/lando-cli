@@ -112,13 +112,18 @@
       "plugins/**/*.yml",
       "node_modules/figlet/fonts/Small Slant.flf",
       "node_modules/figlet/fonts/ANSI Shadow.flf"
-    ]
+    ],
+    "dictionary": {
+      "axios": {
+        "scripts": ["dist/node/axios.cjs"]
+      }
+    }
   },
   "dependencies": {
     "@lando/compose": "^1.0.0",
     "@lando/mailhog": "^0.8.0",
     "@lando/phpmyadmin": "^0.5.0",
-    "axios": "^0.21.4",
+    "axios": "^1.6.0",
     "bluebird": "^3.4.1",
     "clean-stacktrace": "^1.1.0",
     "cli-table3": "^0.5.1",
