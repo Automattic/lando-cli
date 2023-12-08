@@ -324,21 +324,21 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@lando/compose@^1.0.0":
+"@lando/compose@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@lando/compose/-/compose-1.0.0.tgz#1e24bdfe39fb536f43e86aa179c4671d62ffb771"
   integrity sha512-n7EelwK+1T22ueYiOWpniBo5508QJtGsXHENIdnew9e30T33GRUbXCeK7at+dv8CvpqgKsw76lD2Antna9b/Zg==
   dependencies:
     lodash "^4.17.21"
 
-"@lando/mailhog@^0.8.0":
+"@lando/mailhog@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@lando/mailhog/-/mailhog-0.8.0.tgz#b0859d054391f68d4554c7cf5d696b3d93a3a948"
   integrity sha512-BLa/3l1z+6eW865nnGStV0KeG7rF0H5TT6uAIaYh9kOn8vS1UqKUifVsW5tpl54C6goYH+HqGH45aQzeM5Xxgw==
   dependencies:
     lodash "^4.17.21"
 
-"@lando/phpmyadmin@^0.5.0":
+"@lando/phpmyadmin@0.5.0":
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/@lando/phpmyadmin/-/phpmyadmin-0.5.0.tgz#2102d1c26c5c317f2b681683dd6ba0b330fbee5e"
   integrity sha512-u9Yz1HacMR6Hfxf6MAk5FGfvCDtY2coHaVgQ9h/JW8dbJd4Y+Evumi8FKwUlMRpkH1MB+dxaVkl/VJoozgM33g==
