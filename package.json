@@ -115,7 +115,9 @@
     ],
     "dictionary": {
       "axios": {
-        "scripts": ["dist/node/axios.cjs"]
+        "scripts": [
+          "dist/node/axios.cjs"
+        ]
       }
     }
   },
