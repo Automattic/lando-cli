@@ -13,7 +13,7 @@ jobs:
           - ubuntu-latest
           - macos-latest
         node-version:
-          - 'lts/*'
+          - '18'
     steps:
 
       # Install deps and cache
