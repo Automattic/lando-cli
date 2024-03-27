@@ -5,7 +5,7 @@ on:
 
 jobs:
   package:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       TERM: xterm
     strategy:
@@ -14,18 +14,18 @@ jobs:
           - x64
           - arm64
         node-version:
-          - 16
+          - '16'
         os:
           - linux
           - macos
           - win
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: yarn
@@ -37,7 +37,7 @@ jobs:
           node ./scripts/dev-version.js
           node ./bin/lando version
       - name: Package into node binary
-        uses: lando/pkg-action@v2
+        uses: lando/pkg-action@v5
         id: pkg-action
         with:
           entrypoint: bin/lando.js
