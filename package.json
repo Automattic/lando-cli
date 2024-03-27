@@ -37,9 +37,6 @@
   },
   "scripts": {
     "build:cli": "yarn clean && yarn pkg -c package.json -t node14 bin/lando.js",
-    "docs:dev": "vuepress dev docs --clean-cache --clean-temp",
-    "docs:build": "vuepress build docs",
-    "docs:lint": "eslint -c docs/.eslintrc.json --quiet docs/.vuepress",
     "clean": "rimraf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "generate:api": "node ./scripts/yaml2json.js ./sponsors.yml ./contributors.yml --output-dir docs/.vuepress/public/api",
@@ -161,7 +158,6 @@
     "command-line-test": "^1.0.10",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.9.1",
-    "eslint-plugin-vue": "^8.0.3",
     "leia-parser": "^0.4.0",
     "mocha": "^10.0.0",
     "mock-fs": "^5.2.0",
@@ -170,7 +166,7 @@
     "rimraf": "^3.0.2",
     "sinon": "^4.3.0",
     "sinon-chai": "^2.14.0",
-    "version-bump-prompt": "^4.2.1",
-    "vuepress": "2.0.0-beta.43"
-  }
+    "version-bump-prompt": "^4.2.1"
+  },
+  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
 }
