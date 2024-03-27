@@ -61,7 +61,7 @@ cd lando-101
 cp ../.lando.tooling.yml .lando.yml
 lando rebuild -y
 lando composer require squizlabs/php_codesniffer
-lando phpcs --version |grep squiz
+lando phpcs --version | grep -i squiz
 lando destroy -y
 ```
 
