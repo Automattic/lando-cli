@@ -24,7 +24,6 @@
   "nyc": {
     "include": [
       "lib/**/*.js",
-      "experimental/**/lib/*.js",
       "plugins/**/lib/*.js",
       "scripts/util.js"
     ],
@@ -41,9 +40,9 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "generate:api": "node ./scripts/yaml2json.js ./sponsors.yml ./contributors.yml --output-dir docs/.vuepress/public/api",
     "generate:tests": "leia \"examples/**/README.md\" test -r 2 -s 'Start up tests' -t 'Verification commands' -c 'Destroy tests' --split-file --spawn --stdin",
-    "lint": "eslint --quiet --no-ignore bin experimental lib plugins scripts test",
+    "lint": "eslint --quiet --no-ignore bin lib plugins scripts test",
     "release": "bump --prompt --tag --all --push",
-    "test:unit": "nyc --reporter=html --reporter=text mocha --timeout 5000 test/**/*.spec.js experimental/**/test/*.spec.js plugins/**/test/**/*.spec.js",
+    "test:unit": "nyc --reporter=html --reporter=text mocha --timeout 5000 test/**/*.spec.js plugins/**/test/**/*.spec.js",
     "test:functional": "mocha --timeout 900000 test/**/*.func.js",
     "test": "yarn lint && yarn test:unit"
   },
@@ -51,7 +50,6 @@
     "outputPath": "dist",
     "scripts": [
       "bin/*.js",
-      "experimental/**/*.js",
       "lib/**/*.js",
       "node_modules/@lando/**/*.js",
       "plugins/**/*.js"
@@ -59,22 +57,6 @@
     "assets": [
       "config.yml",
       "package.json",
-      "experimental/**/fastcgi_params",
-      "experimental/**/*.cnf",
-      "experimental/**/*.conf",
-      "experimental/**/*.ini",
-      "experimental/**/*.inc",
-      "experimental/**/*.json",
-      "experimental/**/*.php",
-      "experimental/**/*.py",
-      "experimental/**/*.sh",
-      "experimental/**/*.toml",
-      "experimental/**/*.tpl",
-      "experimental/**/*.tmpl",
-      "experimental/**/*.vcl",
-      "experimental/**/*.xml",
-      "experimental/**/*.yaml",
-      "experimental/**/*.yml",
       "node_modules/@lando/**/fastcgi_params",
       "node_modules/@lando/**/*.cnf",
       "node_modules/@lando/**/*.conf",

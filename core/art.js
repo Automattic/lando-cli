@@ -162,28 +162,6 @@ exports.crash = () => [
 ].join(os.EOL);
 
 /*
- * Helper to show status of experimental toggle
- */
-exports.experimental = (on = false) => {
-  switch (on) {
-    case true:
-      return [
-        '',
-        chalk.green(niceFont('Activated!!!', 'Small Slant')),
-        chalk.magenta('Experimental features are now ON'),
-        '',
-      ].join(os.EOL);
-    case false:
-      return [
-        '',
-        chalk.red(niceFont('Deactivated!', 'Small Slant')),
-        chalk.grey('Experimental features are now OFF'),
-        '',
-      ].join(os.EOL);
-  }
-};
-
-/*
  * Helper to show init header
  */
 exports.init = () => [
