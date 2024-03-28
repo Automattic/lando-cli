@@ -14,7 +14,7 @@ jobs:
           - x64
           - arm64
         node-version:
-          - '16'
+          - 'lts/*'
         os:
           - linux
           - macos
@@ -42,7 +42,6 @@ jobs:
         with:
           entrypoint: bin/lando.js
           arch: ${{ matrix.arch }}
-          node-version: ${{ matrix.node-version }}
           os: ${{ matrix.os }}
 
   # sign-n-deploy:
