@@ -31,6 +31,9 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn install --prefer-offline --frozen-lockfile
 
+      - name: Install docker-compose
+        run: sudo wget -q https://github.com/docker/compose/releases/download/1.29.2/docker-compose-Linux-x86_64 -O /usr/local/bin/docker-compose && sudo chmod +x /usr/local/bin/docker-compose
+
       # - name: Install via hyperdrive if above is bad
       - name: Disable usage and error reporting
         run: |
