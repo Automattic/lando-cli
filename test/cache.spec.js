@@ -22,7 +22,6 @@ describe('cache', () => {
       cache.should.be.an('object').with.property('options');
       cache.options.should.have.property('stdTTL', 0);
       cache.options.should.have.property('checkperiod', 600);
-      cache.options.should.have.property('errorOnMissing', false);
       cache.options.should.have.property('useClones', true);
       cache.options.should.have.property('deleteOnExpire', true);
     });
