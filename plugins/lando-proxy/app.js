@@ -203,7 +203,7 @@ module.exports = (app, lando) => {
             .flatMap(s => s.urls = _.uniq(s.urls.concat(utils.parse2Info(
               app.config.proxy[s.service],
               ports,
-              _.get(s, 'hasCerts', false)
+              _.get(s, 'hasCerts', false),
             ))))
             .value();
         }
