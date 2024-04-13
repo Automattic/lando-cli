@@ -114,7 +114,7 @@
     "inquirer-autocomplete-prompt": "^1.0.1",
     "ip": "^1.1.9",
     "js-yaml": "^4.1.0",
-    "jsonfile": "^2.4.0",
+    "jsonfile": "^6.1.0",
     "lodash": "^4.17.21",
     "node-cache": "^4.1.1",
     "object-hash": "^1.1.8",
