@@ -35,7 +35,7 @@
     "all": true
   },
   "scripts": {
-    "build:cli": "yarn clean && yarn pkg -c package.json -t node14 bin/lando.js",
+    "build:cli": "yarn clean && yarn pkg -c package.json -t node18 bin/lando.js",
     "clean": "rimraf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "generate:api": "node ./scripts/yaml2json.js ./sponsors.yml ./contributors.yml --output-dir docs/.vuepress/public/api",
