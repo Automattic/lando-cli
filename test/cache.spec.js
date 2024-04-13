@@ -205,7 +205,7 @@ describe('cache', () => {
       cache.set(
         'subdivisions',
         'Sprawling on the fringes of the city',
-        {persist: true}
+        {persist: true},
       );
 
       fs.existsSync('/tmp/cache/subdivisions').should.be.true;

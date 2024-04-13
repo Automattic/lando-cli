@@ -57,7 +57,7 @@ describe('compose', () => {
       const buildResult = compose.build(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(buildResult).to.be.an('object');
     });
@@ -67,7 +67,7 @@ describe('compose', () => {
         compose.build(
           ['string test'],
           null,
-          myOpts
+          myOpts,
         );
       }).to.throw(Error);
     });
@@ -79,7 +79,7 @@ describe('compose', () => {
       const getIdResult = compose.getId(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(getIdResult).to.be.an('object');
     });
@@ -101,7 +101,7 @@ describe('compose', () => {
       const pullResult = compose.pull(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(pullResult).to.be.an('object');
     });
@@ -117,7 +117,7 @@ describe('compose', () => {
       const removeResult = compose.remove(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(removeResult).to.be.an('object');
     });
@@ -132,7 +132,7 @@ describe('compose', () => {
       const runResult = compose.run(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(runResult).to.be.an('object');
     });
@@ -144,7 +144,7 @@ describe('compose', () => {
       const startResult = compose.start(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(startResult).to.be.an('object');
     });
@@ -153,7 +153,7 @@ describe('compose', () => {
       const startResult = compose.start(
         ['string'],
         'a_project',
-        false
+        false,
       );
       expect(startResult).to.be.an('object');
     });
@@ -164,7 +164,7 @@ describe('compose', () => {
       const startResult = compose.start(
         ['string test'],
         'another_project',
-        myOpts
+        myOpts,
       );
       expect(startResult).to.be.an('object');
       myOpts.entrypoint = [];
@@ -174,7 +174,7 @@ describe('compose', () => {
       const startResult = compose.start(
         ['string test'],
         'another_project',
-        myOpts
+        myOpts,
       );
       expect(startResult).to.be.an('object');
     });
@@ -184,7 +184,7 @@ describe('compose', () => {
       const startResult = compose.start(
         ['string test'],
         'one_project_more',
-        myOpts
+        myOpts,
       );
       expect(startResult).to.be.an('object');
       myOpts.cmd = ['one', 'two'];
@@ -197,7 +197,7 @@ describe('compose', () => {
       const stopResult = compose.stop(
         ['string1', 'string2'],
         'my_project',
-        myOpts
+        myOpts,
       );
       expect(stopResult).to.be.an('object');
     });

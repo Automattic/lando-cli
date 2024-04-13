@@ -27,7 +27,7 @@ module.exports = lando => {
         _(containers)
           .map(container => _.omit(container, ['lando', 'id', 'instance']))
           .value(),
-        options
+        options,
       )));
     },
   };

@@ -36,7 +36,7 @@ const dummyContainer = (overrides = {}) => {
         'io.lando.service-container': 'no',
       },
     },
-    overrides
+    overrides,
   );
 };
 
