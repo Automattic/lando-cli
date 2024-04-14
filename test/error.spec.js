@@ -36,7 +36,7 @@ describe('error', () => {
       });
     });
 
-    it('should log message and report to metrics by default', () => {
+    it('should log message by default', () => {
       const error = new ErrorHandler({error: sinon.spy()});
       return error.handle().then(code => {
         error.log.error.callCount.should.equal(1);
