@@ -93,29 +93,7 @@ describe('shell', () => {
         .then(child.spawn.restore());
     });
 
-    it('should ignore stdin and pipe stdout and stderr when process.lando is not node', () => {
-      const shell = new Shell();
-      process.lando = 'browser';
-      sinon.stub(child, 'spawn').callsFake((cmd, args, opts) => {
-        opts.stdio[0].should.equal('ignore');
-        opts.stdio[1].should.equal('pipe');
-        opts.stdio[2].should.equal('pipe');
-        return {
-          stdout: {on: sinon.spy()},
-          stderr: {on: sinon.spy()},
-          on: (type, fn) => {
-            if (type === 'close') fn(0);
-          },
-        };
-      });
-      return shell.sh(['van', 'the', 'man'], {mode: 'attach'}).should.be.fulfilled
-        .then(child.spawn.restore())
-        .then(() => {
-          delete process.lando;
-        });
-    });
-
-    it('should inherit stdio when process.lando is node', () => {
+    it('should inherit stdio', () => {
       const shell = new Shell();
       process.lando = 'node';
       sinon.stub(child, 'spawn').callsFake((cmd, args, opts) => {

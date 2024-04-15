@@ -35,21 +35,6 @@ describe('plugins', () => {
   describe('#load', () => {
     beforeEach(() => {
       filesystem(fsConfig);
-      delete global.__webpack_require__;
-      delete global.__non_webpack_require__;
-    });
-
-    it('should use __non_webpack_require__ if __webpack_require__ is a func', () => {
-      const plugins = new Plugins();
-      const find = plugins.find(searchDirs);
-      global.__webpack_require__ = sinon.spy();
-      global.__non_webpack_require__ = require;
-      const data = plugins.load(find[0]);
-      data.should.be.an('Object');
-      data.data['plugin-test'].should.be.true;
-      data.name.should.equal(find[0].name);
-      data.path.should.equal(find[0].path);
-      data.dir.should.equal(find[0].dir);
     });
 
     it('should use the plugin from the last location it finds it', () => {
@@ -61,8 +46,6 @@ describe('plugins', () => {
     it('should push a plugin to the plugin registry after it is loaded', () => {
       const plugins = new Plugins();
       const find = plugins.find(searchDirs);
-      global.__webpack_require__ = sinon.spy();
-      global.__non_webpack_require__ = require;
       plugins.load(find[0]);
       plugins.registry.should.be.lengthOf(1);
     });
