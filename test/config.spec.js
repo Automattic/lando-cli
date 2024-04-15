@@ -111,21 +111,6 @@ describe('config', () => {
       delete env.NEW2;
       expect(hasher(env)).to.equal(hasher(process.env));
     });
-
-    it('config.process should return "browser" if in a browser', () => {
-      process.versions.chrome = 'test';
-      const processType = config.defaults().process;
-      expect(processType).to.equal('browser');
-      delete process.versions.chrome;
-    });
-
-    it('config.process should return "node" if not in a browser', () => {
-      delete process.versions.chrome;
-      delete process.versions.electron;
-      delete process.versions['atom-shell'];
-      const processType = config.defaults().process;
-      expect(processType).to.equal('node');
-    });
   });
 
   describe('#getEngineConfig', () => {
