@@ -23,6 +23,3 @@ dockerSupportedVersions:
       linux: https://docs.docker.com/engine/install/
 
 landoFile: .lando.yml
-stats:
-  - report: true
-    url: https://metrics.lando.dev

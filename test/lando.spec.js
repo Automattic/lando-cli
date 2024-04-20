@@ -81,7 +81,6 @@ describe('lando', () => {
         pluginDirs: [srcRoot],
       });
       return lando.bootstrap().then(lando => {
-        lando.config.stats.should.be.an('array').and.not.be.empty;
         // We need to clear out tasks because it seems to persist from require to require
         lando.tasks.tasks = [];
       });
