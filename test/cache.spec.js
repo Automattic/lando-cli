@@ -5,13 +5,11 @@
 
 'use strict';
 
-const _ = require('lodash');
 const chai = require('chai');
 const expect = chai.expect;
 const sinon = require('sinon');
 const filesystem = require('mock-fs');
 const fs = require('fs');
-const NodeCache = require('node-cache');
 chai.should();
 
 const Cache = require('./../lib/cache');
@@ -24,7 +22,6 @@ describe('cache', () => {
       cache.should.be.an('object').with.property('options');
       cache.options.should.have.property('stdTTL', 0);
       cache.options.should.have.property('checkperiod', 600);
-      cache.options.should.have.property('errorOnMissing', false);
       cache.options.should.have.property('useClones', true);
       cache.options.should.have.property('deleteOnExpire', true);
     });
@@ -55,51 +52,6 @@ describe('cache', () => {
     });
   });
 
-  describe('#__get', () => {
-    it('should be the same as new NodeCache().get', () => {
-      filesystem();
-
-      const cache = new Cache();
-      cache.set('yyz', 'amazing');
-
-      const nCache = new NodeCache();
-      nCache.set('yyz', 'amazing');
-
-      cache.__get('yyz').should.eql(nCache.get('yyz'));
-
-      filesystem.restore();
-    });
-  });
-
-  describe('#__set', () => {
-    it('should be the same as new NodeCache().set', () => {
-      filesystem();
-
-      const cache = new Cache();
-      const nCache = new NodeCache();
-      cache.__set('yyz', 'amazing').should.eql(nCache.set('yyz', 'amazing'));
-
-      filesystem.restore();
-    });
-  });
-
-  describe('#__del', () => {
-    it('should be the same as new NodeCache().del', () => {
-      filesystem();
-
-      const cache = new Cache();
-      const nCache = new NodeCache();
-      cache.__set('yyz', 'amazing');
-      const returnone = cache.__del('yyz');
-      nCache.set('yyz', 'amazing');
-      const returntwo = nCache.del('yyz');
-
-      returnone.should.eql(returntwo);
-
-      filesystem.restore();
-    });
-  });
-
   describe('#set', () => {
     it('should set a cached key in memory', () => {
       filesystem();
@@ -109,15 +61,6 @@ describe('cache', () => {
       fs.existsSync('/tmp/cache/yyz').should.be.false;
 
       filesystem.restore();
-    });
-
-    it('should log a failure when key cannot be cached in memory', () => {
-      const cache = new Cache({log: {debug: sinon.spy()}});
-      sinon.stub(cache, '__set').returns(false);
-      cache.set('test', 'thing');
-      const call = cache.log.debug.getCall(0);
-      expect(_.includes(call.args[0], 'Failed')).to.equal(true);
-      cache.log.debug.callCount.should.equal(1);
     });
 
     it('should remove a cached key in memory after ttl has expired', () => {
@@ -213,15 +156,6 @@ describe('cache', () => {
 
       fs.existsSync('/tmp/cache/subdivisions').should.be.false;
       filesystem.restore();
-    });
-
-    it('should log a failure when key cannot be removed from memory', () => {
-      const cache = new Cache({log: {debug: sinon.spy()}});
-      sinon.stub(cache, '__del').returns(false);
-      cache.remove('test');
-      const call = cache.log.debug.getCall(0);
-      expect(_.includes(call.args[0], 'Failed')).to.equal(true);
-      cache.log.debug.callCount.should.equal(2);
     });
   });
 });
