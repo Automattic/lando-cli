@@ -69,12 +69,12 @@ curl http://object-format.lndo.site | grep X-Lando-Test-Ssl || echo $? | grep 1
 curl -k https://object-format.lndo.site | grep X-Lando-Test-Ssl | grep on
 
 # Should generate a default certs config file and put it in the right place
-docker exec landoproxyhyperion5000gandalfedition_proxy_1 cat /proxy_config/default-certs.yaml | grep certFile | grep /certs/cert.crt
-docker exec landoproxyhyperion5000gandalfedition_proxy_1 cat /proxy_config/default-certs.yaml | grep keyFile | grep /certs/cert.key
+docker exec landoproxyhyperion5000gandalfedition-proxy-1 cat /proxy_config/default-certs.yaml | grep certFile | grep /certs/cert.crt
+docker exec landoproxyhyperion5000gandalfedition-proxy-1 cat /proxy_config/default-certs.yaml | grep keyFile | grep /certs/cert.key
 
 # Should generate proxy cert files and move them into the right location as needed
-docker exec landoproxy_web3_1 cat /proxy_config/web3.landoproxy.yaml| grep certFile | grep "/lando/certs/web3.landoproxy.crt"
-docker exec landoproxy_web3_1 cat /proxy_config/web3.landoproxy.yaml| grep keyFile | grep "/lando/certs/web3.landoproxy.key"
+docker exec landoproxy-web3-1 cat /proxy_config/web3.landoproxy.yaml| grep certFile | grep "/lando/certs/web3.landoproxy.crt"
+docker exec landoproxy-web3-1 cat /proxy_config/web3.landoproxy.yaml| grep keyFile | grep "/lando/certs/web3.landoproxy.key"
 ```
 
 Destroy tests
