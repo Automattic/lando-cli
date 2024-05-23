@@ -49,6 +49,7 @@ describe('lando', () => {
       // eslint-disable-next-line no-invalid-this
       this.timeout(45000);
       const lando = new Lando({logLevelConsole: 'warning'});
+      lando.cache.set('docker-version', {fake: true}, {ttl: 300});
       return lando.bootstrap().then(lando => {
         lando.config.userConfRoot.should.equal(os.tmpdir());
         lando.config.plugins.should.be.an('array').and.be.empty;
@@ -61,6 +62,7 @@ describe('lando', () => {
       process.env.JOURNEY_PRODUCT = 'steveperry';
       process.env.JOURNEY_MODE = 'rocknroll';
       const lando = new Lando({envPrefix: 'JOURNEY'});
+      lando.cache.set('docker-version', {fake: true}, {ttl: 300});
       return lando.bootstrap().then(lando => {
         lando.config.userConfRoot.should.equal(os.tmpdir());
         lando.config.plugins.should.be.an('array').and.be.empty;
@@ -80,6 +82,7 @@ describe('lando', () => {
         configSources: [path.resolve(srcRoot, 'config.yml')],
         pluginDirs: [srcRoot],
       });
+      lando.cache.set('docker-version', {fake: true}, {ttl: 300});
       return lando.bootstrap().then(lando => {
         // We need to clear out tasks because it seems to persist from require to require
         lando.tasks.tasks = [];
