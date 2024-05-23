@@ -49,17 +49,17 @@ reset_user() {
   if getent group "$HOST_GID" 1>/dev/null 2>/dev/null; then
     HOST_GROUP=$(getent group "$HOST_GID" | cut -d: -f1)
   fi
-  if [ "$DISTRO" = "alpine" ]; then
+  if command -v usermod > /dev/null 2>&1 && command -v groupmod > /dev/null 2>&1; then
+    usermod -o -u "$HOST_UID" "$USER" 2>/dev/null
+    groupmod -g "$HOST_GID" "$GROUP" 2>/dev/null || true
+    usermod -g "$HOST_GID" "$USER" 2>/dev/null || true
+    usermod -a -G "$GROUP" "$USER" 2>/dev/null || true
+  else
     deluser "$USER" 2>/dev/null
     addgroup -g "$HOST_GID" "$GROUP" 2>/dev/null | addgroup "$GROUP" 2>/dev/null
     addgroup -g "$HOST_GID" "$HOST_GROUP" 2>/dev/null
     adduser -u "$HOST_UID" -G "$HOST_GROUP" -h /var/www -D "$USER" 2>/dev/null
     adduser "$USER" "$GROUP" 2>/dev/null
-  else
-    usermod -o -u "$HOST_UID" "$USER" 2>/dev/null
-    groupmod -g "$HOST_GID" "$GROUP" 2>/dev/null || true
-    usermod -g "$HOST_GID" "$USER" 2>/dev/null || true
-    usermod -a -G "$GROUP" "$USER" 2>/dev/null || true
   fi;
   # If this mapping is incorrect lets abort here
   if [ "$(id -u $USER)" != "$HOST_UID" ]; then

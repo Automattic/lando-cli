@@ -39,8 +39,8 @@ lando rebuild -y
 # Should rerun build steps even if containers are manually removed and stuff
 lando destroy -y
 lando start -y
-docker rm -f landoservices_nginx_1
-docker rm -f landoservices_appserver_1
+docker rm -f landoservices-nginx-1
+docker rm -f landoservices-appserver-1
 lando start -y
 lando ssh -s appserver -c "vim --version"
 lando ssh -s appserver -c "cat /var/www/build.txt"
