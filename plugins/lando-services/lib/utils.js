@@ -31,9 +31,9 @@ exports.cloneOverrides = (overrides = {}) => {
  * @TODO: this looks pretty testable? should services have libs?
  */
 exports.getInstallCommands = (deps, pkger, prefix = []) => _(deps)
-  .map((version, pkg) => _.flatten([prefix, pkger(pkg, version)]))
-  .map(command => command.join(' '))
-  .value();
+    .map((version, pkg) => _.flatten([prefix, pkger(pkg, version)]))
+    .map(command => command.join(' '))
+    .value();
 
 /*
  * Filter and map build steps
@@ -95,26 +95,26 @@ exports.filterBuildSteps = (services, app, rootSteps = [], buildSteps= [], prest
  * Parse config into raw materials for our factory
  */
 exports.parseConfig = (config, app) => _(config)
-  // Arrayify
-  .map((service, name) => _.merge({}, service, {name}))
-  // Filter out any services without a type, this implicitly assumes these
-  // services are "managed" by lando eg their type/version details are provided
-  // by another service
-  .filter(service => _.has(service, 'type'))
-  // Build the config
-  .map(service => _.merge({}, service, {
-    _app: app,
-    data: `data_${service.name}`,
-    app: app.name,
-    confDest: path.join(app._config.userConfRoot, 'config', service.type.split(':')[0]),
-    home: app._config.home,
-    project: app.project,
-    type: service.type.split(':')[0],
-    root: app.root,
-    userConfRoot: app._config.userConfRoot,
-    version: service.type.split(':')[1],
-  }))
-  .value();
+// Arrayify
+    .map((service, name) => _.merge({}, service, {name}))
+// Filter out any services without a type, this implicitly assumes these
+// services are "managed" by lando eg their type/version details are provided
+// by another service
+    .filter(service => _.has(service, 'type'))
+// Build the config
+    .map(service => _.merge({}, service, {
+      _app: app,
+      data: `data_${service.name}`,
+      app: app.name,
+      confDest: path.join(app._config.userConfRoot, 'config', service.type.split(':')[0]),
+      home: app._config.home,
+      project: app.project,
+      type: service.type.split(':')[0],
+      root: app.root,
+      userConfRoot: app._config.userConfRoot,
+      version: service.type.split(':')[1],
+    }))
+    .value();
 
 /*
  * Run build
@@ -124,20 +124,20 @@ exports.runBuild = (app, steps, lockfile, hash = 'YOU SHALL NOT PASS') => {
     app.log.info('running build steps...');
     return app.engine.run(steps)
     // Save the new hash if everything works out ok
-    .then(() => {
-      app._lando.cache.set(lockfile, hash, {persist: true});
-      app.log.info('build steps completed. and locked with %s', lockfile);
-    })
+        .then(() => {
+          app._lando.cache.set(lockfile, hash, {persist: true});
+          app.log.info('build steps completed. and locked with %s', lockfile);
+        })
     // Make sure we don't save a hash if our build fails
-    .catch(error => {
-      app.addWarning({
-        title: `One of your build steps failed`,
-        detail: [
-          'This **MAY** prevent your app from working.',
-          'Check for errors above, fix them in your Landofile, and try again by running:',
-        ],
-        command: 'lando rebuild',
-      }, error);
-    });
+        .catch(error => {
+          app.addWarning({
+            title: `One of your build steps failed`,
+            detail: [
+              'This **MAY** prevent your app from working.',
+              'Check for errors above, fix them in your Landofile, and try again by running:',
+            ],
+            command: 'lando rebuild',
+          }, error);
+        });
   }
 };

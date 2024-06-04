@@ -59,10 +59,10 @@ exports.getDbTooling = database => {
  * Helper to get the phar build command
  */
 exports.getDrush = (version, status) => exports.getPhar(
-  getDrushUrl(version),
-  '/tmp/drush.phar',
-  '/usr/local/bin/drush',
-  status,
+    getDrushUrl(version),
+    '/tmp/drush.phar',
+    '/usr/local/bin/drush',
+    status,
 );
 
 /*

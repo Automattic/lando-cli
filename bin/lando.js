@@ -48,45 +48,45 @@ if (!hconf[binPath] || (landoConfig.version !== hconf[binPath].version)) {
   ];
 
   const plugins = pluginDirs
-    .filter(dir => dir.type === 'core')
-    .map(dir => ([dir.dir, fs.readdirSync(path.resolve(__dirname, '..', dir.dir))]))
-    .map(dir => dir[1].map(plugin => path.join(dir[0], plugin)))
-    .flat(Number.POSITIVE_INFINITY)
-    .map(dir => ({
-      location: `lando://${dir}`,
-      manifest: path.join(__dirname, '..', dir, 'plugin.yml'),
-      pjson: path.join(__dirname, '..', dir, 'package.json'),
-    }))
-    .filter(plugin => fs.existsSync(plugin.manifest))
+      .filter(dir => dir.type === 'core')
+      .map(dir => ([dir.dir, fs.readdirSync(path.resolve(__dirname, '..', dir.dir))]))
+      .map(dir => dir[1].map(plugin => path.join(dir[0], plugin)))
+      .flat(Number.POSITIVE_INFINITY)
+      .map(dir => ({
+        location: `lando://${dir}`,
+        manifest: path.join(__dirname, '..', dir, 'plugin.yml'),
+        pjson: path.join(__dirname, '..', dir, 'package.json'),
+      }))
+      .filter(plugin => fs.existsSync(plugin.manifest))
     .map(plugin => Object.assign(plugin, { // eslint-disable-line
-      manifest: yaml.load(fs.readFileSync(plugin.manifest)),
-      pjson: fs.existsSync(plugin.pjson) ? require(plugin.pjson) : {},
-    }))
-    .map(plugin => ({
-      name: plugin.manifest.name || plugin.pjson.name,
-      package: plugin.manifest.name || plugin.pjson.name,
-      deprecated: plugin.deprecated === true,
-      hidden: plugin.hidden === true,
-      location: plugin.location,
-      type: 'core',
-      version: plugin.manifest.version || plugin.pjson.version || version,
-      isValid: true,
-      isInstalled: true,
-    }));
+        manifest: yaml.load(fs.readFileSync(plugin.manifest)),
+        pjson: fs.existsSync(plugin.pjson) ? require(plugin.pjson) : {},
+      }))
+      .map(plugin => ({
+        name: plugin.manifest.name || plugin.pjson.name,
+        package: plugin.manifest.name || plugin.pjson.name,
+        deprecated: plugin.deprecated === true,
+        hidden: plugin.hidden === true,
+        location: plugin.location,
+        type: 'core',
+        version: plugin.manifest.version || plugin.pjson.version || version,
+        isValid: true,
+        isInstalled: true,
+      }));
 
   // get app config
   const extension = `.${landoFile.split('.')[landoFile.split('.').length -1]}`;
   const namespace = path.basename(landoFile, extension);
   const landofiles = preLandoFiles.concat([namespace]).concat(postLandoFiles)
-    .map(file => file.replace(namespace, ''))
-    .map(file => file.replace(extension, ''))
-    .map(file => file.replace('.', ''));
+      .map(file => file.replace(namespace, ''))
+      .map(file => file.replace(extension, ''))
+      .map(file => file.replace('.', ''));
 
   // assemble
   hconf[binPath] = {
     lando: {globalDir, plugins, pluginDirs, version, envPrefix, product},
     app: {landofile: namespace, landofiles,
-  }};
+    }};
   // dump
   fs.mkdirSync(path.dirname(landoConfig.hconf), {recursive: true});
   fs.writeFileSync(landoConfig.hconf, JSON.stringify(hconf, null, 2));

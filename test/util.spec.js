@@ -21,7 +21,7 @@ const resetPlatform = function() {
 const util = require('./../scripts/util');
 
 describe('scripts', () => {
- describe('#cliTargetOs', () => {
+  describe('#cliTargetOs', () => {
     it('should return macos on darwin', () => {
       setPlatform('darwin');
       util.cliTargetOs().should.equal('macos');

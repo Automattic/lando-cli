@@ -98,8 +98,8 @@ describe('env', () => {
       filesystem({'/usr/bin/docker-compose': 'CODEZ'});
       const composeExecutable = env.getComposeExecutable(true);
       expect(composeExecutable)
-        .to
-        .equal('/usr/bin/docker-compose');
+          .to
+          .equal('/usr/bin/docker-compose');
       filesystem.restore();
       resetPlatform();
     });

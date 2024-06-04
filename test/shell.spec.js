@@ -30,8 +30,8 @@ const fakeSpawn = (cmd, args, opts) => {
   return {
     connected: !_.includes(command, 'van the man'),
     stdout: {on: (type, fn) => {
-        fn(Buffer.from('SPAWN: ' + command, 'utf8'));
-      },
+      fn(Buffer.from('SPAWN: ' + command, 'utf8'));
+    },
     },
     on: (type, fn) => {
       if (type === 'error') fn(Buffer.from('ERROR', 'utf8'));
@@ -59,11 +59,11 @@ describe('shell', () => {
       const shell = new Shell();
       sinon.stub(_shell, 'exec').callsFake(fakeExec);
       return shell.sh(['slip', 'sliding', 'away'])
-        .then(result => {
-          result.should.equal('EXEC: slip sliding away');
-        })
-        .then(_shell.exec.restore())
-        .should.be.fulfilled;
+          .then(result => {
+            result.should.equal('EXEC: slip sliding away');
+          })
+          .then(_shell.exec.restore())
+          .should.be.fulfilled;
     });
 
     it('should use child_process.spawn when mode is not exec or detached is true', () => {
@@ -71,10 +71,10 @@ describe('shell', () => {
       sinon.stub(child, 'spawn').callsFake(fakeSpawn);
       _.forEach([{mode: 'collect'}, {detached: true}], opts => {
         return shell.sh(['tupelo', 'honey', 'baby'], opts)
-          .then(result => {
-            result.should.equal('SPAWN: tupelo honey baby');
-          })
-          .should.be.fulfilled;
+            .then(result => {
+              result.should.equal('SPAWN: tupelo honey baby');
+            })
+            .should.be.fulfilled;
       });
       child.spawn.restore();
     });
@@ -83,14 +83,14 @@ describe('shell', () => {
       const shell = new Shell();
       sinon.stub(child, 'spawn').callsFake(fakeSpawn);
       return shell.sh(['set', 'us', 'up', 'the', 'bomb'], {mode: 'attach'}).should.be.rejected
-        .then(child.spawn.restore());
+          .then(child.spawn.restore());
     });
 
     it('should resolve immediately when detached is true and run.connected is false', () => {
       const shell = new Shell();
       sinon.stub(child, 'spawn').callsFake(fakeSpawn);
       return shell.sh(['van', 'the', 'man'], {detached: true}).should.be.fulfilled
-        .then(child.spawn.restore());
+          .then(child.spawn.restore());
     });
 
     it('should inherit stdio', () => {
@@ -106,10 +106,10 @@ describe('shell', () => {
         };
       });
       return shell.sh(['van', 'the', 'man'], {mode: 'attach'}).should.be.fulfilled
-        .then(child.spawn.restore())
-        .then(() => {
-          delete process.lando;
-        });
+          .then(child.spawn.restore())
+          .then(() => {
+            delete process.lando;
+          });
     });
   });
 

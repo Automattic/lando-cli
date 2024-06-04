@@ -146,9 +146,9 @@ describe('cache', () => {
       filesystem();
       const cache = new Cache({cacheDir: '/tmp/cache/'});
       cache.set(
-        'subdivisions',
-        'Sprawling on the fringes of the city',
-        {persist: true},
+          'subdivisions',
+          'Sprawling on the fringes of the city',
+          {persist: true},
       );
 
       fs.existsSync('/tmp/cache/subdivisions').should.be.true;

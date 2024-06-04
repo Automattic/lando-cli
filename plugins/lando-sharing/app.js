@@ -8,11 +8,11 @@ const utils = require('./lib/utils');
 
 // Helper to get excludes
 const getExcludes = (data = [], inverse = false) => _(data)
-  .filter(exclude => _.startsWith(exclude, '!') === inverse)
-  .map(exclude => _.trimStart(exclude, '!'))
-  .uniq()
-  .compact()
-  .value();
+    .filter(exclude => _.startsWith(exclude, '!') === inverse)
+    .map(exclude => _.trimStart(exclude, '!'))
+    .uniq()
+    .compact()
+    .value();
 
 // Helper to get includes
 const getIncludes = data => getExcludes(data, true);
@@ -54,10 +54,10 @@ module.exports = (app, lando) => {
         };
         return lando.engine.run(run)
         // Destroy on fail
-        .catch(err => {
-          run.opts = {purge: true, mode: 'attach'};
-          return lando.engine.stop(run).then(() => lando.engine.destroy(run)).then(() => lando.Promise.reject(err));
-        });
+            .catch(err => {
+              run.opts = {purge: true, mode: 'attach'};
+              return lando.engine.stop(run).then(() => lando.engine.destroy(run)).then(() => lando.Promise.reject(err));
+            });
       }
     });
 

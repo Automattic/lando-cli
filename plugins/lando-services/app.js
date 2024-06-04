@@ -90,19 +90,19 @@ module.exports = (app, lando) => {
     app.log.verbose('discovering dynamic portforward info...');
     const forwarders = _.filter(app.info, service => _.get(service, 'external_connection.port', false));
     return lando.engine.list({project: app.project})
-    .filter(service => _.includes(_.flatMap(forwarders, service => service.service), service.service))
-    .map(service => ({
-      id: service.id,
-      service: service.service,
-      internal: _.get(_.find(app.info, {service: service.service}), 'internal_connection.port'),
-    }))
-    .map(service => lando.engine.scan(service).then(data => {
-      const key = `NetworkSettings.Ports.${service.internal}/tcp`;
-      const port = _.filter(_.get(data, key, []), forward => forward.HostIp === lando.config.bindAddress);
-      if (_.has(port[0], 'HostPort')) {
-        _.set(_.find(app.info, {service: service.service}), 'external_connection.port', port[0].HostPort);
-      }
-    }));
+        .filter(service => _.includes(_.flatMap(forwarders, service => service.service), service.service))
+        .map(service => ({
+          id: service.id,
+          service: service.service,
+          internal: _.get(_.find(app.info, {service: service.service}), 'internal_connection.port'),
+        }))
+        .map(service => lando.engine.scan(service).then(data => {
+          const key = `NetworkSettings.Ports.${service.internal}/tcp`;
+          const port = _.filter(_.get(data, key, []), forward => forward.HostIp === lando.config.bindAddress);
+          if (_.has(port[0], 'HostPort')) {
+            _.set(_.find(app.info, {service: service.service}), 'external_connection.port', port[0].HostPort);
+          }
+        }));
   });
 
   // Determine pullable and locally built images
@@ -110,8 +110,8 @@ module.exports = (app, lando) => {
     app.log.verbose('determining pullable services...');
     // Determine local vs pullable services
     const whereats = _(_.get(app, 'config.services', {}))
-      .map((data, service) => ({service, isLocal: _.has(data, 'overrides.build') || _.has(data, 'services.build')}))
-      .value();
+        .map((data, service) => ({service, isLocal: _.has(data, 'overrides.build') || _.has(data, 'services.build')}))
+        .value();
 
     // Set local and pullys for downstream concerns
     app.log.debug('determined pullable services', whereats);

@@ -48,11 +48,11 @@ const getExecOpts = (docker, datum) => {
  * Helper to get dynamic service keys for stripping
  */
 const getDynamicKeys = (answer, answers = {}) => _(answers)
-  .map((value, key) => ({key, value}))
-  .filter(data => data.value === answer)
-  .map(data => data.key)
-  .map(key => (_.size(key) === 1) ? `-${key}` : `--${key}`)
-  .value();
+    .map((value, key) => ({key, value}))
+    .filter(data => data.value === answer)
+    .map(data => data.key)
+    .map(key => (_.size(key) === 1) ? `-${key}` : `--${key}`)
+    .value();
 
 /*
  * Helper to handle dynamic services
@@ -92,10 +92,10 @@ const handleOpts = (config, argopts = []) => {
  * Helper to get passthru options
  */
 const handlePassthruOpts = (options = {}, answers = {}) => _(options)
-  .map((value, key) => _.merge({}, {name: key}, value))
-  .filter(value => value.passthrough === true && !_.isNil(answers[value.name]))
-  .map(value => `--${value.name}=${answers[value.name]}`)
-  .value();
+    .map((value, key) => _.merge({}, {name: key}, value))
+    .filter(value => value.passthrough === true && !_.isNil(answers[value.name]))
+    .map(value => `--${value.name}=${answers[value.name]}`)
+    .value();
 
 /*
  * Helper to convert a command into config object
@@ -139,26 +139,26 @@ exports.dockerExec = (injected, stdio, datum = {}) => {
  * Helper to get tts
  */
 exports.getToolingTasks = (config, app) => _(config)
-  .map((task, name) => _.merge({}, task, {app, name}))
-  .filter(task => _.isObject(task))
-  .value();
+    .map((task, name) => _.merge({}, task, {app, name}))
+    .filter(task => _.isObject(task))
+    .value();
 
 /*
  * Helper to parse tooling config options
  */
 exports.parseConfig = (cmd, service, options = {}, answers = {}) => _(cmd)
-  // Put into an object so we can handle "multi-service" tooling
-  .map(cmd => parseCommand(cmd, service))
-  // Handle dynamic services
-  .map(config => handleDynamic(config, options, answers))
-  // Add in any argv extras if they've been passed in
-  .map(config => handleOpts(config, handlePassthruOpts(options, answers)))
-  // Wrap the command in /bin/sh if that makes sense
-  .map(config => _.merge({}, config, {command: escape(config.command, true, config.args)}))
-  // Add any args to the command and compact to remove undefined
-  .map(config => _.merge({}, config, {command: _.compact(config.command.concat(config.args))}))
-  // Put into an object
-  .value();
+// Put into an object so we can handle "multi-service" tooling
+    .map(cmd => parseCommand(cmd, service))
+// Handle dynamic services
+    .map(config => handleDynamic(config, options, answers))
+// Add in any argv extras if they've been passed in
+    .map(config => handleOpts(config, handlePassthruOpts(options, answers)))
+// Wrap the command in /bin/sh if that makes sense
+    .map(config => _.merge({}, config, {command: escape(config.command, true, config.args)}))
+// Add any args to the command and compact to remove undefined
+    .map(config => _.merge({}, config, {command: _.compact(config.command.concat(config.args))}))
+// Put into an object
+    .value();
 
 /*
  * Helper to get defaults
@@ -174,7 +174,7 @@ exports.toolingDefaults = ({
   service = '',
   stdio = ['inherit', 'pipe', 'pipe'],
   user = null,
-  } = {}) =>
+} = {}) =>
   ({
     name,
     app: app,
