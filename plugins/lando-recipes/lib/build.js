@@ -33,8 +33,8 @@ exports.buildRun = config => ({
 // Helper to run
 exports.run = (lando, run) => lando.engine.run(run).catch(err => {
   return lando.engine.stop(killRun(run))
-  .then(() => lando.engine.destroy(killRun(run)))
-  .then(() => lando.Promise.reject(err));
+      .then(() => lando.engine.destroy(killRun(run)))
+      .then(() => lando.Promise.reject(err));
 });
 
 // Helper to get run defaults
@@ -42,12 +42,12 @@ exports.runDefaults = (lando, options) => {
   // Handle all the compose stuff
   const LandoInit = lando.factory.get('_init');
   const initData = new LandoInit(
-    lando.config.userConfRoot,
-    lando.config.home,
-    options.destination,
-    _.cloneDeep(lando.config.appEnv),
-    _.cloneDeep(lando.config.appLabels),
-    _.get(options, 'initImage', 'devwithlando/util:4'),
+      lando.config.userConfRoot,
+      lando.config.home,
+      options.destination,
+      _.cloneDeep(lando.config.appEnv),
+      _.cloneDeep(lando.config.appLabels),
+      _.get(options, 'initImage', 'devwithlando/util:4'),
   );
   const initDir = path.join(lando.config.userConfRoot, 'init', options.name);
   const initFiles = lando.utils.dumpComposeData(initData, initDir);

@@ -16,20 +16,20 @@ exports.getHostPath = mount => _.dropRight(mount.split(':')).join(':');
  */
 exports.getUrls = (data, scan = ['80, 443'], secured = ['443'], bindAddress = '127.0.0.1') => {
   return _(_.merge(_.get(data, 'Config.ExposedPorts', []), {'443/tcp': {}}))
-  .map((value, port) => ({
-    port: _.head(port.split('/')),
-    protocol: (_.includes(secured, port.split('/')[0])) ? 'https' : 'http'}
-  ))
-  .filter(exposed => _.includes(scan, exposed.port))
-  .flatMap(ports => _.map(_.get(data, `NetworkSettings.Ports.${ports.port}/tcp`, []), i => _.merge({}, ports, i)))
-  .filter(ports => _.includes([bindAddress, '0.0.0.0'], ports.HostIp))
-  .map(ports => url.format({
-    protocol: ports.protocol,
-    hostname: 'localhost',
-    port: _.includes(scan, ports.port) ? ports.HostPort : '',
-  }))
-  .thru(urls => ({service: data.Config.Labels['com.docker.compose.service'], urls}))
-  .value();
+      .map((value, port) => ({
+        port: _.head(port.split('/')),
+        protocol: (_.includes(secured, port.split('/')[0])) ? 'https' : 'http'}
+      ))
+      .filter(exposed => _.includes(scan, exposed.port))
+      .flatMap(ports => _.map(_.get(data, `NetworkSettings.Ports.${ports.port}/tcp`, []), i => _.merge({}, ports, i)))
+      .filter(ports => _.includes([bindAddress, '0.0.0.0'], ports.HostIp))
+      .map(ports => url.format({
+        protocol: ports.protocol,
+        hostname: 'localhost',
+        port: _.includes(scan, ports.port) ? ports.HostPort : '',
+      }))
+      .thru(urls => ({service: data.Config.Labels['com.docker.compose.service'], urls}))
+      .value();
 };
 
 /*
@@ -85,9 +85,9 @@ exports.startTable = app => {
     name: app.name,
     location: app.root,
     services: _(app.info)
-      .map(info => (info.healthy) ? chalk.green(info.service) : chalk.yellow(info.service))
-      .values()
-      .join(', '),
+        .map(info => (info.healthy) ? chalk.green(info.service) : chalk.yellow(info.service))
+        .values()
+        .join(', '),
   };
   const urls = {};
 
@@ -119,5 +119,5 @@ exports.stripPatch = version => _.slice(version.split('.'), 0, 2).join('.');
  * Helper to help us allow wildcard patch versions eg when there is no minor version tag available
  */
 exports.stripWild = versions => _(versions)
-  .map(version => (version.split('.')[2] === 'x') ? _.slice(version.split('.'), 0, 2).join('.') : version)
-  .value();
+    .map(version => (version.split('.')[2] === 'x') ? _.slice(version.split('.'), 0, 2).join('.') : version)
+    .value();

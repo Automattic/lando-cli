@@ -19,18 +19,18 @@ const shell = new Shell(log);
 return shell.sh(['git', 'describe', '--tags', '--always', '--abbrev=1'], {mode: 'collect'})
 
 // Trim the tag
-.then(data => _.trim(data.slice(1)))
+    .then(data => _.trim(data.slice(1)))
 
 // Replace the version for our files
-.then(version => {
-  const packageJson = require('./../package.json');
-  packageJson.version = version;
-  log.info('Updating package.json to dev version %s', packageJson.version);
-  fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
-})
+    .then(version => {
+      const packageJson = require('./../package.json');
+      packageJson.version = version;
+      log.info('Updating package.json to dev version %s', packageJson.version);
+      fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 2));
+    })
 
 // Catch errors and do stuff so we can break builds when this fails
-.catch(error => {
-  log.error(error);
-  process.exit(error.code || 555);
-});
+    .catch(error => {
+      log.error(error);
+      process.exit(error.code || 555);
+    });

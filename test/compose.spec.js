@@ -55,9 +55,9 @@ describe('compose', () => {
     it('should return the correct default options when not specified');
     it('#build should return an object.', () => {
       const buildResult = compose.build(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(buildResult).to.be.an('object');
     });
@@ -65,9 +65,9 @@ describe('compose', () => {
     it('#build should throw and error if project string is not defined.', () => {
       expect(() => {
         compose.build(
-          ['string test'],
-          null,
-          myOpts,
+            ['string test'],
+            null,
+            myOpts,
         );
       }).to.throw(Error);
     });
@@ -77,9 +77,9 @@ describe('compose', () => {
     it('should return the correct default options when not specified');
     it('#getId should return an object.', () => {
       const getIdResult = compose.getId(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(getIdResult).to.be.an('object');
     });
@@ -99,9 +99,9 @@ describe('compose', () => {
     it('should not pull any services that are beind built locally');
     it('#pull should return an object.', () => {
       const pullResult = compose.pull(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(pullResult).to.be.an('object');
     });
@@ -115,9 +115,9 @@ describe('compose', () => {
     it('should return the correct default options for remove when not specified');
     it('#remove should return an object.', () => {
       const removeResult = compose.remove(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(removeResult).to.be.an('object');
     });
@@ -130,9 +130,9 @@ describe('compose', () => {
     it('should set opts.cmd into an array at index 2 with /bin/sh and -c as indeces 0 and 1');
     it('#run should return an object.', () => {
       const runResult = compose.run(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(runResult).to.be.an('object');
     });
@@ -142,18 +142,18 @@ describe('compose', () => {
     it('should return the correct default options when not specified');
     it('#start should return an object.', () => {
       const startResult = compose.start(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(startResult).to.be.an('object');
     });
 
     it('#start without options should work.', () => {
       const startResult = compose.start(
-        ['string'],
-        'a_project',
-        false,
+          ['string'],
+          'a_project',
+          false,
       );
       expect(startResult).to.be.an('object');
     });
@@ -162,9 +162,9 @@ describe('compose', () => {
       myOpts.entrypoint = 'astring';
       myOpts.cmd = 'acommand';
       const startResult = compose.start(
-        ['string test'],
-        'another_project',
-        myOpts,
+          ['string test'],
+          'another_project',
+          myOpts,
       );
       expect(startResult).to.be.an('object');
       myOpts.entrypoint = [];
@@ -172,9 +172,9 @@ describe('compose', () => {
 
     it('#start with no opts (false).', () => {
       const startResult = compose.start(
-        ['string test'],
-        'another_project',
-        myOpts,
+          ['string test'],
+          'another_project',
+          myOpts,
       );
       expect(startResult).to.be.an('object');
     });
@@ -182,9 +182,9 @@ describe('compose', () => {
     it('#start with cmd as a string should still return and object.', () => {
       myOpts.cmd = ['cmdstring'];
       const startResult = compose.start(
-        ['string test'],
-        'one_project_more',
-        myOpts,
+          ['string test'],
+          'one_project_more',
+          myOpts,
       );
       expect(startResult).to.be.an('object');
       myOpts.cmd = ['one', 'two'];
@@ -195,9 +195,9 @@ describe('compose', () => {
     it('should return the correct default options when not specified');
     it('#stop should return an object.', () => {
       const stopResult = compose.stop(
-        ['string1', 'string2'],
-        'my_project',
-        myOpts,
+          ['string1', 'string2'],
+          'my_project',
+          myOpts,
       );
       expect(stopResult).to.be.an('object');
     });

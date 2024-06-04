@@ -40,9 +40,9 @@ describe('events', () => {
       events.on('event', same1);
       events.on('event', same2);
       const priorityFiveEvents = _(events._listeners)
-        .filter(event => event.name === 'event')
-        .filter(event => event.priority === 5)
-        .size();
+          .filter(event => event.name === 'event')
+          .filter(event => event.priority === 5)
+          .size();
       priorityFiveEvents.should.equal(2);
     });
 

@@ -23,9 +23,9 @@ const getInfoUrls = (url, ports, hasCerts = false) => {
  * Reduces urls to first open port
  */
 exports.getFirstOpenPort = (scanner, urls = []) => scanner(urls, {max: 1, waitCodes: []})
-  .filter(url => url.status === false)
-  .map(port => _.last(port.url.split(':')))
-  .then(ports => ports[0]);
+    .filter(url => url.status === false)
+    .map(port => _.last(port.url.split(':')))
+    .then(ports => ports[0]);
 
 /*
  * Helper to determine what ports have changed
@@ -65,40 +65,40 @@ exports.getRule = rule => {
  * Get a list of URLs and their counts
  */
 exports.getUrlsCounts = config => _(config)
-  .flatMap(service => service)
-  .map(url => exports.parseUrl(url))
-  .map(data => `${data.host}${data.pathname}:${data.port}`)
-  .countBy()
-  .value();
+    .flatMap(service => service)
+    .map(url => exports.parseUrl(url))
+    .map(data => `${data.host}${data.pathname}:${data.port}`)
+    .countBy()
+    .value();
 
 /*
  * Parse config into urls we can merge to app.info
  */
 exports.parse2Info = (urls, ports, hasCerts = false) => _(urls)
-  .map(url => exports.parseUrl(url))
-  .flatMap(url => getInfoUrls(url, ports, hasCerts))
-  .value();
+    .map(url => exports.parseUrl(url))
+    .flatMap(url => getInfoUrls(url, ports, hasCerts))
+    .value();
 
 /*
  * Parse urls into SANS
  */
 exports.parse2Sans = urls => _(urls)
-  .map(url => exports.parseUrl(url).host)
-  .map((host, index) => `DNS.${10+index} = ${host}`)
-  .value()
-  .join('\n');
+    .map(url => exports.parseUrl(url).host)
+    .map((host, index) => `DNS.${10+index} = ${host}`)
+    .value()
+    .join('\n');
 
 /*
  * Parse hosts for traefik
  */
 exports.parseConfig = (config, sslReady = []) => _(config)
-  .map((urls, service) => ({
-    environment: {
-      LANDO_PROXY_NAMES: exports.parse2Sans(urls),
-    },
-    name: service,
-    labels: exports.parseRoutes(service, urls, sslReady)}))
-  .value();
+    .map((urls, service) => ({
+      environment: {
+        LANDO_PROXY_NAMES: exports.parse2Sans(urls),
+      },
+      name: service,
+      labels: exports.parseRoutes(service, urls, sslReady)}))
+    .value();
 
 /*
  * Helper to parse the routes
@@ -106,10 +106,10 @@ exports.parseConfig = (config, sslReady = []) => _(config)
 exports.parseRoutes = (service, urls = [], sslReady, labels = {}) => {
   // Prepare our URLs for traefik
   const parsedUrls = _(urls)
-    .map(url => exports.parseUrl(url))
-    .map(parsedUrl => _.merge({}, parsedUrl, {id: hasher(parsedUrl)}))
-    .uniqBy('id')
-    .value();
+      .map(url => exports.parseUrl(url))
+      .map(parsedUrl => _.merge({}, parsedUrl, {id: hasher(parsedUrl)}))
+      .uniqBy('id')
+      .value();
 
   // Add things into the labels
   _.forEach(parsedUrls, rule => {
@@ -121,8 +121,8 @@ exports.parseRoutes = (service, urls = [], sslReady, labels = {}) => {
     };
     // Ensure we prefix all middleware with the ruleid
     rule.middlewares = _(rule.middlewares)
-      .map(middleware => _.merge({}, middleware, {name: `${rule.id}-${middleware.name}`}))
-      .value();
+        .map(middleware => _.merge({}, middleware, {name: `${rule.id}-${middleware.name}`}))
+        .value();
 
     // Set up all the middlewares
     _.forEach(rule.middlewares, m => {
@@ -138,9 +138,9 @@ exports.parseRoutes = (service, urls = [], sslReady, labels = {}) => {
     labels[`traefik.http.routers.${rule.id}.rule`] = exports.getRule(rule);
     // Set none secure middlewares
     labels[`traefik.http.routers.${rule.id}.middlewares`] = _(_.map(rule.middlewares, 'name'))
-      .filter(name => !_.endsWith(name, '-secured'))
-      .value()
-      .join(',');
+        .filter(name => !_.endsWith(name, '-secured'))
+        .value()
+        .join(',');
 
     // Add https if we can
     if (_.includes(sslReady, service)) {
@@ -180,5 +180,5 @@ exports.parseUrl = data => {
  * Maps ports to urls
  */
 exports.ports2Urls = (ports, secure = false, hostname = '127.0.0.1') => _(ports)
-  .map(port => url.format({protocol: (secure) ? 'https' : 'http', hostname, port}))
-  .value();
+    .map(port => url.format({protocol: (secure) ? 'https' : 'http', hostname, port}))
+    .value();

@@ -21,11 +21,11 @@ module.exports = lando => {
           console.log('');
         })
         // Provide help if there is an error
-        .catch(err => {
-          app.log.error(err.message, err);
-          console.log(lando.cli.makeArt('appStart', {phase: 'error'}));
-          return lando.Promise.reject(err);
-        });
+            .catch(err => {
+              app.log.error(err.message, err);
+              console.log(lando.cli.makeArt('appStart', {phase: 'error'}));
+              return lando.Promise.reject(err);
+            });
       }
     },
   };

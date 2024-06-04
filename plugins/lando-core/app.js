@@ -55,14 +55,14 @@ module.exports = (app, lando) => {
       app.log.verbose('attempting to find open services...');
       return app.engine.list({project: app.project})
       // Return running containers
-      .filter(container => app.engine.isRunning(container.id))
+          .filter(container => app.engine.isRunning(container.id))
       // Make sure they are still a defined service (eg if the user changes their lando yml)
-      .filter(container => _.includes(app.services, container.service))
+          .filter(container => _.includes(app.services, container.service))
       // Inspect each and add new URLS
-      .map(container => app.engine.scan(container))
+          .map(container => app.engine.scan(container))
       // Scan all the http ports
-      .map(data => utils.getUrls(data, getHttpPorts(data), getHttpsPorts(data), lando.config.bindAddress))
-      .map(data => _.find(app.info, {service: data.service}).urls = data.urls);
+          .map(data => utils.getUrls(data, getHttpPorts(data), getHttpsPorts(data), lando.config.bindAddress))
+          .map(data => _.find(app.info, {service: data.service}).urls = data.urls);
     });
   });
 
@@ -83,9 +83,9 @@ module.exports = (app, lando) => {
           services: [service],
         },
       })
-      .catch(err => {
-        app.addWarning(warnings.serviceNotRunningWarning(service), err);
-      });
+          .catch(err => {
+            app.addWarning(warnings.serviceNotRunningWarning(service), err);
+          });
     }));
   });
 
@@ -106,9 +106,9 @@ module.exports = (app, lando) => {
             services: [service],
           },
         })
-        .catch(err => {
-          app.addWarning(warnings.serviceNotRunningWarning(service), err);
-        });
+            .catch(err => {
+              app.addWarning(warnings.serviceNotRunningWarning(service), err);
+            });
       }));
     }
   });
@@ -121,9 +121,9 @@ module.exports = (app, lando) => {
     // Get keys on host
     const sshDir = path.resolve(lando.config.home, '.ssh');
     const keys = _(fs.readdirSync(sshDir))
-      .filter(file => !_.includes(['config', 'known_hosts'], file))
-      .filter(file => path.extname(file) !== '.pub')
-      .value();
+        .filter(file => !_.includes(['config', 'known_hosts'], file))
+        .filter(file => path.extname(file) !== '.pub')
+        .value();
 
     // Determine the key size
     const keySize = _.size(_.get(app, 'config.keys', keys));
@@ -166,38 +166,38 @@ module.exports = (app, lando) => {
     });
   });
 
- // Add some logic that extends start until healthchecked containers report as healthy
+  // Add some logic that extends start until healthchecked containers report as healthy
   app.events.on('post-start', 1, () => lando.engine.list({project: app.project})
-    // Filter out containers without a healthcheck
-    .filter(container => _.has(_.find(app.info, {service: container.service}), 'healthcheck'))
-    // Map to info
-    .map(container => _.find(app.info, {service: container.service}))
-    // Map to a retry of the healthcheck command
-    .map(info => lando.Promise.retry(() => {
-      return app.engine.run({
-        id: app.getServiceContainerId(info.service),
-        cmd: info.healthcheck,
-        compose: app.compose,
-        project: app.project,
-        opts: {
-          user: 'root',
-          cstdio: 'pipe',
-          silent: true,
-          noTTY: true,
-          services: [info.service],
-        },
-      })
-      .catch(err => {
-        console.log('Waiting until %s service is ready...', info.service);
-        app.log.debug('running healthcheck %s for %s...', info.healthcheck, info.service);
-        // app.log.silly(err);
-        return Promise.reject(info.service);
-      });
-    }, {max: 25, backoff: 1000})
-    .catch(service => {
-      info.healthy = false;
-      app.addWarning(warnings.serviceUnhealthyWarning(service), Error(`${service} reported as unhealthy.`));
-    })));
+  // Filter out containers without a healthcheck
+      .filter(container => _.has(_.find(app.info, {service: container.service}), 'healthcheck'))
+  // Map to info
+      .map(container => _.find(app.info, {service: container.service}))
+  // Map to a retry of the healthcheck command
+      .map(info => lando.Promise.retry(() => {
+        return app.engine.run({
+          id: app.getServiceContainerId(info.service),
+          cmd: info.healthcheck,
+          compose: app.compose,
+          project: app.project,
+          opts: {
+            user: 'root',
+            cstdio: 'pipe',
+            silent: true,
+            noTTY: true,
+            services: [info.service],
+          },
+        })
+            .catch(err => {
+              console.log('Waiting until %s service is ready...', info.service);
+              app.log.debug('running healthcheck %s for %s...', info.healthcheck, info.service);
+              // app.log.silly(err);
+              return Promise.reject(info.service);
+            });
+      }, {max: 25, backoff: 1000})
+          .catch(service => {
+            info.healthy = false;
+            app.addWarning(warnings.serviceUnhealthyWarning(service), Error(`${service} reported as unhealthy.`));
+          })));
 
   // If the app already is installed but we can't determine the builtAgainst, then set it to something bogus
   app.events.on('pre-start', () => {

@@ -31,14 +31,14 @@ module.exports = lando => ({
     // Go deep if we need to
     if (app && options.deep) {
       return app.init().then(() => lando.engine.list({project: app.project})
-        .filter(container => filterServices(container.service, options.service))
-        .each(container => lando.engine.scan(container)
-          .then(data => console.log(lando.cli.formatData(data, options)))),
-        );
+          .filter(container => filterServices(container.service, options.service))
+          .each(container => lando.engine.scan(container)
+              .then(data => console.log(lando.cli.formatData(data, options)))),
+      );
     } else if (app && !options.deep) {
       return app.init().then(() => console.log(lando.cli.formatData(
-        _.filter(app.info, service => filterServices(service.service, options.service)),
-        options,
+          _.filter(app.info, service => filterServices(service.service, options.service)),
+          options,
       )));
     }
   },

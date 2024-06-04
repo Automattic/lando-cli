@@ -23,15 +23,15 @@ if (_.isEmpty(inputFiles)) {
 
 // Validate filenames
 const inputFilePaths = _(inputFiles)
-  // Map to absolute paths relative to cwd
-  .map(file => path.resolve(process.cwd(), file))
-  // Filter out nonexistent files and warn
-  .filter(file => {
-    if (!fs.existsSync(file)) log.warn('Could not locate file %s! Skipping that one...', file);
-    return fs.existsSync(file);
-  })
-  // warn
-  .value();
+// Map to absolute paths relative to cwd
+    .map(file => path.resolve(process.cwd(), file))
+// Filter out nonexistent files and warn
+    .filter(file => {
+      if (!fs.existsSync(file)) log.warn('Could not locate file %s! Skipping that one...', file);
+      return fs.existsSync(file);
+    })
+// warn
+    .value();
 
 // Make sure output dir is dialed
 if (!fs.existsSync(outputDir)) {
@@ -41,12 +41,12 @@ if (!fs.existsSync(outputDir)) {
 
 // Finalize inputs and outputs
 const files = _(inputFilePaths)
-  // Map to input/output pairs
-  .map(file => ({
-    input: file,
-    output: path.resolve(outputDir, `${path.basename(file, path.extname(file))}.json`),
-  }))
-  .value();
+// Map to input/output pairs
+    .map(file => ({
+      input: file,
+      output: path.resolve(outputDir, `${path.basename(file, path.extname(file))}.json`),
+    }))
+    .value();
 
 
 // Write the files

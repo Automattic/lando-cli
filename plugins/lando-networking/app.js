@@ -15,21 +15,21 @@ module.exports = (app, lando) => {
     // List all our app containers
     return lando.engine.list({project: app.project})
     // Go through each container
-    .map(container => {
-      // Define the internal aliae
-      const internalAlias = `${container.service}.${container.app}.internal`;
-      // Sometimes you need to disconnect before you reconnect
-      return landonet.disconnect({Container: container.id, Force: true})
-      // Only throw non not connected errors
-      .catch(error => {
-        if (!_.includes(error.message, 'is not connected to network lando')) throw error;
-      })
-      // Connect
-      .then(() => {
-        landonet.connect({Container: container.id, EndpointConfig: {Aliases: [internalAlias]}});
-        app.log.debug('connected %s to the landonet', container.name);
-      });
-    });
+        .map(container => {
+          // Define the internal aliae
+          const internalAlias = `${container.service}.${container.app}.internal`;
+          // Sometimes you need to disconnect before you reconnect
+          return landonet.disconnect({Container: container.id, Force: true})
+          // Only throw non not connected errors
+              .catch(error => {
+                if (!_.includes(error.message, 'is not connected to network lando')) throw error;
+              })
+          // Connect
+              .then(() => {
+                landonet.connect({Container: container.id, EndpointConfig: {Aliases: [internalAlias]}});
+                app.log.debug('connected %s to the landonet', container.name);
+              });
+        });
   });
 
   // Add proxy routes to the proxy as aliases. This should resolve a long
@@ -54,26 +54,26 @@ module.exports = (app, lando) => {
         // @NOTE: Do we need to handle wildcards and paths?
         const aliasPath = `NetworkSettings.Networks.${lando.config.networkBridge}.Aliases`;
         const aliases = _(_.get(app, 'config.proxy', []))
-          .map(route => route)
-          .flatten()
-          .map(entry => _.isString(entry) ? entry : entry.hostname)
-          .map(entry => _.first(entry.split(':')))
-          .compact()
-          .thru(routes => routes.concat(_.get(data, aliasPath, [])))
-          .uniq()
-          .value();
+            .map(route => route)
+            .flatten()
+            .map(entry => _.isString(entry) ? entry : entry.hostname)
+            .map(entry => _.first(entry.split(':')))
+            .compact()
+            .thru(routes => routes.concat(_.get(data, aliasPath, [])))
+            .uniq()
+            .value();
 
         // Disconnect so we can reconnect
         return bridgeNet.disconnect({Container: proxyContainer, Force: true})
-          // Only throw non not connected errors
-          .catch(error => {
-            if (!_.includes(error.message, 'is not connected to network lando')) throw error;
-          })
-          // Connect
-          .then(() => {
-            bridgeNet.connect({Container: proxyContainer, EndpointConfig: {Aliases: aliases}});
-            app.log.debug('aliased %j to the proxynet', aliases);
-          });
+        // Only throw non not connected errors
+            .catch(error => {
+              if (!_.includes(error.message, 'is not connected to network lando')) throw error;
+            })
+        // Connect
+            .then(() => {
+              bridgeNet.connect({Container: proxyContainer, EndpointConfig: {Aliases: aliases}});
+              app.log.debug('aliased %j to the proxynet', aliases);
+            });
       });
     });
   });
