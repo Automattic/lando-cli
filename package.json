@@ -112,7 +112,6 @@
     "glob": "^7.1.3",
     "inquirer": "^6.2.1",
     "inquirer-autocomplete-prompt": "^1.0.1",
-    "ip": "^1.1.9",
     "js-yaml": "^4.1.0",
     "jsonfile": "^6.1.0",
     "lodash": "^4.17.21",
