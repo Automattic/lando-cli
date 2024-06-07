@@ -2,9 +2,9 @@
 
 // Modules
 const _ = require('lodash');
-const ip = require('ip');
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
+const {networkInterfaces} = require('node:os');
 
 // Default env values
 const defaults = {
@@ -37,6 +37,26 @@ const uc = (uid, gid, username) => ({
     username,
   },
 });
+
+/**
+ * Emulates the behavior of `ip.address()`: returns the first address with `ipv4` or loopback address `127.0.0.1`.
+ *
+ * @return {string}
+ */
+const hostIp = () => {
+  const interfaces = networkInterfaces();
+  const names = Object.keys(interfaces);
+
+  for (const name of names) {
+    for (const {address, family, internal} of interfaces[name]) {
+      if (family === 'IPv4' && !internal) {
+        return address;
+      }
+    }
+  }
+
+  return '127.0.0.1';
+};
 
 /*
  * Helper to get ca run object
@@ -100,7 +120,7 @@ module.exports = lando => {
       LANDO_DOMAIN: lando.config.domain,
       LANDO_HOST_HOME: lando.config.home,
       LANDO_HOST_OS: lando.config.os.platform,
-      LANDO_HOST_IP: (process.platform === 'linux') ? ip.address() : 'host.docker.internal',
+      LANDO_HOST_IP: (process.platform === 'linux') ? hostIp() : 'host.docker.internal',
       LANDO_LEIA: _.toInteger(lando.config.leia),
       LANDO_MOUNT: '/app',
     },
