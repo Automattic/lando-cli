@@ -42,7 +42,7 @@ fi;
 # its going to have bash
 #
 # TODO: would be awesome to make this POSIX compliant at some point
-if [ -f "/helpers/load-keys.sh" ] && [ -x "$(command -v bash)" ]; then
+if [ -f "/helpers/load-keys.sh" ] && [ -x "$(command -v bash)" ] && [ "${LANDO_LOAD_KEYS:-}" != 'false' ]; then
   /helpers/load-keys.sh
 fi;
 
@@ -71,17 +71,17 @@ fi
 
 # Run the COMMAND
 # @TODO: We should def figure out whether we can get away with running everything through exec at some point
-lando_info "Lando handing off to: $@"
+lando_info "Lando handing off to: $*"
 
 # Try to DROP DOWN to another user if we can
-if [ ! -z ${LANDO_DROP_USER+x} ]; then
+if [ -n "${LANDO_DROP_USER+x}" ]; then
   lando_debug "Running command as ${LANDO_DROP_USER}..."
-  su ${LANDO_DROP_USER} -c "$@" || tail -f /dev/null
+  su "${LANDO_DROP_USER}" -c "$@" || tail -f /dev/null
 # Try using EXEC
-elif [ ! -z ${LANDO_NEEDS_EXEC+x} ]; then
+elif [ -n "${LANDO_NEEDS_EXEC+x}" ]; then
   lando_debug "Running command with exec..."
   exec "$@" || tail -f /dev/null
 # Otherwise just run
 else
- "$@" || tail -f /dev/null
+  "$@" || tail -f /dev/null
 fi;
