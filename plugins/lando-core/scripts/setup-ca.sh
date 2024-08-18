@@ -50,7 +50,7 @@ if [ ! -f "$LANDO_CA_CERT" ]; then
     -sha256 \
     -days 8675 \
     -out $LANDO_CA_CERT \
-    -subj "/C=US/ST=California/L=San Francisco/O=Lando/OU=Bespin/CN=Lando Local CA"
+    -subj "/C=US/ST=California/L=San Francisco/O=Automattic/OU=WPVIP/CN=WPVIP Local CA"
   # Set the cert and key on host to host-uid/gid ownership
   chown "$LANDO_HOST_UID:$LANDO_HOST_GID" "$LANDO_CA_KEY"
   chown "$LANDO_HOST_UID:$LANDO_HOST_GID" "$LANDO_CA_CERT"
