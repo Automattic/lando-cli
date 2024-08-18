@@ -99,7 +99,7 @@ lando_info ""
 
 lando_info "Generating certs..."
 openssl genrsa -out /certs/cert.key 2048
-openssl req -new -key /certs/cert.key -out /certs/cert.csr -subj "/C=US/ST=California/L=San Francisco/O=Lando/OU=Bespin/CN=${COMMON_NAME}"
+openssl req -new -key /certs/cert.key -out /certs/cert.csr -subj "/C=US/ST=California/L=San Francisco/O=Automattic/OU=WPVIP/CN=${COMMON_NAME}"
 openssl x509 \
   -req \
   -in /certs/cert.csr \
