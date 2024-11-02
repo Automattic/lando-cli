@@ -54,7 +54,7 @@ exports.getProxyRunner = (project, files) => ({
  */
 exports.getRule = rule => {
   // Start with the rule we can assume
-  const hostRegex = rule.host.replace(new RegExp('\\*', 'g'), '{wildcard:[a-z0-9-]+}');
+  const hostRegex = rule.host.replace(new RegExp('\\*', 'g'), '[a-z0-9-]+');
   const rules = [`HostRegexp(\`${hostRegex}\`)`];
   // Add in the path prefix if we can
   if (rule.pathname.length > 1) rules.push(`PathPrefix(\`${rule.pathname}\`)`);
