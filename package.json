@@ -101,7 +101,6 @@
     }
   },
   "dependencies": {
-    "@lando/compose": "1.0.0",
     "axios": "^1.7.2",
     "bluebird": "^3.4.1",
     "cli-table3": "^0.6.5",
