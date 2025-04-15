@@ -30,6 +30,8 @@ _.forEach(searchDirs, dir => {
   fsConfig[path.join(dir, 'plugins', 'lando-test', 'plugin.yml')] = 'DONT MATTER';
 });
 
+process.env.NODE_ENV = 'test';
+
 // This is the file we are testing
 describe('plugins', () => {
   describe('#load', () => {
