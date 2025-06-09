@@ -10,7 +10,6 @@ const chai = require('chai');
 const EventEmitter = require('events').EventEmitter;
 const filesystem = require('mock-fs');
 const fs = require('fs');
-const path = require('path');
 chai.should();
 
 const Log = require('./../lib/logger');
@@ -19,7 +18,7 @@ describe('logger', () => {
   describe('#Log', () => {
     it('should return a Log instance with correct default options', () => {
       const log = new Log();
-      log.should.be.instanceof(EventEmitter);
+      log.should.be.instanceof(Log);
       log.should.have.property('exitOnError', true);
       log.transports.should.be.an('object').with.property('console');
       log.transports.console.should.be.instanceof(EventEmitter);
@@ -53,7 +52,7 @@ describe('logger', () => {
       // Need to preemptively load in the winston File transports because mock-fs handles
       // lazy requires on the mock filesystem and CAN'T FIND SHIT
       // @see: https://github.com/tschaub/mock-fs/issues/213
-      require(path.resolve('./node_modules/winston/lib/winston/transports/file')).File;
+      require('winston/lib/winston/transports/file');
       filesystem();
       const log = new Log({logDir: '/tmp/logz', logLevel: 'warn'});
       fs.existsSync('/tmp/logz').should.be.true;
