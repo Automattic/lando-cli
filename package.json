@@ -123,7 +123,7 @@
     "transliteration": "^2.3.5",
     "uuid": "^11.0.0",
     "valid-url": "^1.0.9",
-    "winston": "2.4.5",
+    "winston": "^3.11.0",
     "yargs": "^16.1.0"
   },
   "devDependencies": {
