@@ -22,7 +22,7 @@ const getInfoUrls = (url, ports, hasCerts = false) => {
 };
 
 /**
- * Finds ports UNavailable for listening from a list of URLs.
+ * Finds ports unavailable for listening from a list of URLs.
  * We look for unavailable ports because of the way Lando interpretes the results.
  * It will use the first port with `status === false` for the proxy. However, if look for an available port,
  * the status of `false` will mean that we failed to connect to it, but that does not mean we can listen on it (e.g., because of ETIMEDOUT).
