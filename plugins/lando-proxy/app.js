@@ -42,8 +42,8 @@ const getAllPorts = (noHttp, noHttps, config) => {
  */
 const scanPorts = (lando, status = {http: true, https: true}) => {
   return lando.Promise.all([
-    utils.getFirstOpenPort(lando.scanUrls, lando.config.proxyScanHttp),
-    utils.getFirstOpenPort(lando.scanUrls, lando.config.proxyScanHttps),
+    utils.getFirstOpenPort(utils.findUnavailablePorts, lando.config.proxyScanHttp),
+    utils.getFirstOpenPort(utils.findUnavailablePorts, lando.config.proxyScanHttps),
   ])
   // @TODO: below could live in utils and would be easy to test
       .then(results => ({http: results[0], https: results[1]}))
