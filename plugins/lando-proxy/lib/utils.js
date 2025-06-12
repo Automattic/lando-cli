@@ -1,9 +1,11 @@
 'use strict';
 
 // Modules
+const {Socket} = require('net');
 const _ = require('lodash');
 const hasher = require('object-hash');
 const url = require('url');
+const Promise = require('../../../lib/promise');
 
 /*
  * Helper to get URLs for app info and scanning purposes
@@ -17,6 +19,55 @@ const getInfoUrls = (url, ports, hasCerts = false) => {
   }
   // Return
   return urls;
+};
+
+/**
+ * Finds ports UNavailable for listening from a list of URLs.
+ * We look for unavailable ports because of the way Lando interpretes the results.
+ * It will use the first port with `status === false` for the proxy. However, if look for an available port,
+ * the status of `false` will mean that we failed to connect to it, but that does not mean we can listen on it (e.g., because of ETIMEDOUT).
+ * That is why we have to invert the meaning of the status.
+ *
+ * @param {string[]} urls An array of URLs to scan for unavailable ports.
+ * @return {Promise<Array>} An array of objects of the form {url: url, status: boolean}. If `status === true`, the port is available.
+ */
+exports.findUnavailablePorts = urls => {
+  return Promise.map(urls, (url => {
+    const u = new URL(url);
+    const port = +(u.port || (u.protocol === 'https:' ? '443' : '80'));
+
+    /**
+     * @type {() => {url: string, status: boolean}} resolve
+     */
+    return new Promise(resolve => {
+      let isAvailable = false;
+      const socket = new Socket();
+      socket.setTimeout(3000);
+
+      socket.on('connect', () => {
+        isAvailable = true;
+        socket.destroy();
+      });
+
+      socket.on('timeout', () => {
+        isAvailable = true;
+        socket.destroy();
+      });
+
+      socket.on('error', err => {
+        if (!('code' in err) || err.code !== 'ECONNREFUSED') {
+          isAvailable = true;
+        }
+        socket.destroy();
+      });
+
+      socket.on('close', () => {
+        resolve({url, status: isAvailable});
+      });
+
+      socket.connect(port, u.hostname);
+    });
+  }));
 };
 
 /*
