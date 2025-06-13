@@ -20,9 +20,10 @@ describe('logger', () => {
       const log = new Log();
       log.should.be.instanceof(Log);
       log.should.have.property('exitOnError', true);
-      log.transports.should.be.an('object').with.property('console');
-      log.transports.console.should.be.instanceof(EventEmitter);
-      log.transports.console.should.have.property('level', 'warn');
+      log.transports.should.be.an('array');
+      log.transports.should.have.lengthOf(1);
+      log.transports[0].should.be.instanceof(EventEmitter);
+      log.transports[0].should.have.property('level', 'warn');
       _.forEach(['error', 'warn', 'info', 'verbose', 'debug', 'silly'], level => {
         log[level].should.be.a('function');
       });
@@ -30,7 +31,7 @@ describe('logger', () => {
 
     it('should return a Log instance with custom logLevelConsole', () => {
       const log = new Log({logLevelConsole: 'info'});
-      log.transports.console.should.have.property('level', 'info');
+      log.transports[0].should.have.property('level', 'info');
     });
 
     it('should return a Log instance with custom integer logLevelConsole', () => {
@@ -44,7 +45,7 @@ describe('logger', () => {
       };
       _.forEach(logLevels, (word, num) => {
         const log = new Log({logLevelConsole: _.toInteger(num)});
-        log.transports.console.should.have.property('level', word);
+        log.transports[0].should.have.property('level', word);
       });
     });
 
@@ -56,11 +57,18 @@ describe('logger', () => {
       filesystem();
       const log = new Log({logDir: '/tmp/logz', logLevel: 'warn'});
       fs.existsSync('/tmp/logz').should.be.true;
-      _.forEach(['error-file', 'log-file'], transport => {
-        log.transports.should.be.an('object').with.property(transport);
-        log.transports[transport].should.be.instanceof(EventEmitter);
-        log.transports[transport].should.have.property('level', 'warn');
-      });
+      log.transports.should.be.an('array');
+      log.transports.should.have.lengthOf(3);
+
+      // First transport should be console
+      log.transports[0].should.be.instanceof(EventEmitter);
+
+      // Other two should be file transports
+      log.transports[1].should.be.instanceof(EventEmitter);
+      log.transports[1].should.have.property('level', 'warn');
+      log.transports[2].should.be.instanceof(EventEmitter);
+      log.transports[2].should.have.property('level', 'warn');
+
       filesystem.restore();
     });
   });
