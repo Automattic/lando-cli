@@ -1,4 +1,4 @@
-# docker build -t devwithlando/util:4 .
+# docker build -t ghcr.io/automattic/vip-container-images/lando-util:4 .
 
 FROM debian:bookworm-slim
 RUN apt-get update && \
