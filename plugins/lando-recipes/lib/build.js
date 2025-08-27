@@ -47,7 +47,7 @@ exports.runDefaults = (lando, options) => {
       options.destination,
       _.cloneDeep(lando.config.appEnv),
       _.cloneDeep(lando.config.appLabels),
-      _.get(options, 'initImage', 'devwithlando/util:4'),
+      _.get(options, 'initImage', 'ghcr.io/automattic/vip-container-images/lando-util:4'),
   );
   const initDir = path.join(lando.config.userConfRoot, 'init', options.name);
   const initFiles = lando.utils.dumpComposeData(initData, initDir);
