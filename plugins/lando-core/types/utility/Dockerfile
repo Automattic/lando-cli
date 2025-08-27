@@ -6,4 +6,4 @@ RUN apt-get update && \
   && apt-get -y clean \
   && apt-get -y autoclean \
   && apt-get -y autoremove \
-  && rm -rf /var/lib/apt/lists/* /var/lib/cache/* /var/lib/log/* /tmp/*
+  && rm -rf /var/lib/apt/lists/* /var/cache/apt/* /tmp/*
