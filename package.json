@@ -124,8 +124,6 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.6",
-    "@babel/eslint-parser": "^7.24.6",
     "chai": "^3.5.0",
     "chai-as-promised": "^7.1.2",
     "chai-events": "^0.0.1",
