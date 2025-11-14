@@ -11,7 +11,7 @@ exports.cannotStartProxyWarning = message => ({
 });
 
 exports.unknownServiceWarning = service => ({
-  title: 'Proxying to unknown service!',
+  title: `Proxying to unknown service "${service}"!`,
   detail: [
     `${service} is a service that does not exist in your app!!!`,
     'This means we have not been able to set up your proxy route',
