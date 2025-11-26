@@ -4,6 +4,7 @@
 const fs = require('fs');
 const _ = require('lodash');
 const path = require('path');
+const chalk = require('chalk');
 const utils = require('./lib/utils');
 const warnings = require('./lib/warnings');
 
@@ -111,10 +112,20 @@ module.exports = (app, lando) => {
         const proxyFiles = lando.utils.dumpComposeData(proxyData, path.join(lando.config.userConfRoot, 'proxy'));
 
         // Start the proxy
-        return lando.engine.start(utils.getProxyRunner(lando.config.proxyName, proxyFiles)).then(() => {
-          lando.cache.set(lando.config.proxyCache, ports, {persist: true});
-          return ports;
-        });
+        const data = utils.getProxyRunner(lando.config.proxyName, proxyFiles);
+        data.opts.pullable = data.opts. services;
+
+        return lando.engine.engineCmd('pull', data).catch(err => {
+          console.error(chalk.red('\nWe were unable to pull the latest proxy image.'));
+          console.error('The system will fall back to any existing local image.');
+          console.error(chalk.red('If no local image is available, the service may malfunction.'));
+          console.error('Please check your network connection or firewall configuration.');
+          console.error('\nError details:', err.message);
+        }).then(() =>
+          lando.engine.start(utils.getProxyRunner(lando.config.proxyName, proxyFiles)).then(() => {
+            lando.cache.set(lando.config.proxyCache, ports, {persist: true});
+            return ports;
+          }));
       })
 
       // Parse the proxy config to get traefix labels
