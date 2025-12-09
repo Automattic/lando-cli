@@ -124,7 +124,7 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
     "chai-events": "^0.0.1",
     "command-line-test": "^1.0.10",
