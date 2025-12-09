@@ -1451,15 +1451,10 @@ fecha@^4.2.0:
   resolved "https://registry.npmjs.org/fecha/-/fecha-4.2.3.tgz"
   integrity sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==
 
-figlet@^1.1.1:
-  version "1.8.1"
-  resolved "https://registry.npmjs.org/figlet/-/figlet-1.8.1.tgz"
-  integrity sha512-kEC3Sme+YvA8Hkibv0NR1oClGcWia0VB2fC1SlMy027cwe795Xx40Xiv/nw/iFAwQLupymWh+uhAAErn/7hwPg==
-
-figlet@^1.8.0:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/figlet/-/figlet-1.9.1.tgz#2760642afc600199065c229d1e7ced7bb39c7107"
-  integrity sha512-DpKC89iXFjq6NCaIQ1O91R+ofpfyvkwuBfoVd8LpP/JZGZQpelMXgiTStGOfksuMYaDoBAwFlvx7mk+wX+3rrA==
+figlet@^1.1.1, figlet@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/figlet/-/figlet-1.9.4.tgz#2f642d6ba473b186cb6b9052c180045ba638685d"
+  integrity sha512-uN6QE+TrzTAHC1IWTyrc4FfGo2KH/82J8Jl1tyKB7+z5DBit/m3D++Iu5lg91qJMnQQ3vpJrj5gxcK/pk4R9tQ==
   dependencies:
     commander "^14.0.0"
 
