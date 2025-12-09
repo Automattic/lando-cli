@@ -114,7 +114,7 @@
     "lodash": "^4.17.21",
     "node-cache": "^5.1.2",
     "object-hash": "^1.1.8",
-    "semver": "^7.3.8",
+    "semver": "^7.7.3",
     "shelljs": "^0.10.0",
     "string-argv": "0.1.1",
     "through": "^2.3.8",
