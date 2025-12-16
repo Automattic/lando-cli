@@ -131,7 +131,7 @@
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
     "leia-parser": "^0.4.0",
-    "mocha": "^11.6.0",
+    "mocha": "^11.7.5",
     "mock-fs": "^5.2.0",
     "nyc": "^17.1.0",
     "pkg": "^5.3.1",
