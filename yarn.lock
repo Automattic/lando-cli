@@ -804,10 +804,10 @@ chai-as-promised@^7.1.2:
   dependencies:
     check-error "^1.0.2"
 
-chai-events@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.npmjs.org/chai-events/-/chai-events-0.0.1.tgz"
-  integrity sha512-z0T88ZW4syURwNVRtQDtb9yPDJDr0YTJlOOskgcMOYvwRQfBjiLotzQGi1J4PyRavLxAR5wp9V3aNph8hO4Ymw==
+chai-events@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/chai-events/-/chai-events-0.0.3.tgz#6750768e33230591e9becf17cffb5cdc7efee689"
+  integrity sha512-l0fRlpl095Zb52fbkvuIJUxrNBotCb7ynuzILnGXdrc8Y776smRgHn3shKET6vGSYP6hd3kTx4hD86urj67I1Q==
   dependencies:
     chai "^3.5.0"
 
