@@ -27,9 +27,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
-          cache: yarn
-      - name: Install Yarn dependencies
-        run: yarn install --prefer-offline --frozen-lockfile
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
 
       - name: Install docker-compose
         run: |
@@ -37,7 +37,6 @@ jobs:
           LATEST_RELEASE=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" --silent "https://api.github.com/repos/${REPO}/releases/latest" | jq -r .tag_name)
           sudo curl -L "https://github.com/${REPO}/releases/download/${LATEST_RELEASE}/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose && sudo chmod 0755 /usr/local/bin/docker-compose
 
-      # - name: Install via hyperdrive if above is bad
       - name: Disable usage and error reporting
         run: |
           mkdir -p ~/.lando/cache
@@ -45,9 +44,9 @@ jobs:
           sed -i "s/report: true.*/report: false/" config.yml
       - name: Package CLI
         run: |
-          yarn add --ignore-engines @lando/acquia@^0.5.0 @lando/apache@^0.5.0 @lando/argv@^1.1.0 @lando/backdrop@^0.5.0 @lando/dotnet@^0.5.0 @lando/drupal@^0.5.0 @lando/elasticsearch@^0.5.0 @lando/go@^0.5.0 @lando/joomla@^0.5.0 @lando/lagoon@^0.5.0 @lando/lamp@^0.5.0 @lando/laravel@^0.5.0 @lando/lemp@^0.5.0 @lando/mariadb@^0.5.0 @lando/mean@^0.5.0 @lando/memcached @lando/mongo@^0.5.0 @lando/mssql@^0.5.0 @lando/mysql@^0.5.0 @lando/nginx@^0.5.0 @lando/node@^0.5.0 @lando/pantheon@^0.5.0 @lando/php@^0.5.0 @lando/postgres@^0.5.0 @lando/python@^0.5.0 @lando/redis@^0.5.0 @lando/ruby@^0.5.0 @lando/solr@^0.5.0 @lando/symfony@^0.5.0 @lando/tomcat@^0.5.0 @lando/varnish@^0.5.0 @lando/wordpress@^0.5.0  @lando/mailhog@0.8.0 @lando/phpmyadmin@0.5.0
+          npm install @lando/acquia@^0.5.0 @lando/apache@^0.5.0 @lando/argv@^1.1.0 @lando/backdrop@^0.5.0 @lando/dotnet@^0.5.0 @lando/drupal@^0.5.0 @lando/elasticsearch@^0.5.0 @lando/go@^0.5.0 @lando/joomla@^0.5.0 @lando/lagoon@^0.5.0 @lando/lamp@^0.5.0 @lando/laravel@^0.5.0 @lando/lemp@^0.5.0 @lando/mariadb@^0.5.0 @lando/mean@^0.5.0 @lando/memcached @lando/mongo@^0.5.0 @lando/mssql@^0.5.0 @lando/mysql@^0.5.0 @lando/nginx@^0.5.0 @lando/node@^0.5.0 @lando/pantheon@^0.5.0 @lando/php@^0.5.0 @lando/postgres@^0.5.0 @lando/python@^0.5.0 @lando/redis@^0.5.0 @lando/ruby@^0.5.0 @lando/solr@^0.5.0 @lando/symfony@^0.5.0 @lando/tomcat@^0.5.0 @lando/varnish@^0.5.0 @lando/wordpress@^0.5.0  @lando/mailhog@0.8.0 @lando/phpmyadmin@0.5.0
           sed -i -r 's!bitnami/([a-z0-9]+:)!bitnamilegacy/\1!' node_modules/@lando/*/services/*/builder.js
-          yarn build:cli
+          npm run build:cli
       - name: Replace source CLI with packaged one
         run: sudo mv ./dist/@lando/cli /usr/local/bin/lando
       - name: Verify we can run the packaged CLI
@@ -57,6 +56,6 @@ jobs:
 
       # This block should eventually become use lando/actions-leia@v2
       - name: Generate tests
-        run: yarn generate:tests
+        run: npm run generate:tests
       - name: Run ${{ matrix.leia-tests }} tests
-        run: yarn mocha --timeout 900000 ./test/${{ matrix.leia-tests }}.func.js
+        run: npx mocha --timeout 900000 ./test/${{ matrix.leia-tests }}.func.js

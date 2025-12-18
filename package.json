@@ -35,16 +35,14 @@
     "all": true
   },
   "scripts": {
-    "build:cli": "yarn clean && yarn pkg -c package.json -t node24 bin/lando.js",
+    "build:cli": "npm run clean && pkg -c package.json -t node24 bin/lando.js",
     "clean": "rimraf dist",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "generate:api": "node ./scripts/yaml2json.js ./sponsors.yml ./contributors.yml --output-dir docs/.vuepress/public/api",
     "generate:tests": "leia \"examples/**/README.md\" test -r 2 -s 'Start up tests' -t 'Verification commands' -c 'Destroy tests' --split-file --spawn --stdin",
-    "lint": "eslint --quiet --no-ignore bin lib plugins scripts test",
-    "release": "bump --prompt --tag --all --push",
+    "lint": "eslint --quiet --no-ignore bin lib plugins test",
     "test:unit": "nyc --reporter=html --reporter=text mocha --timeout 5000 test/**/*.spec.js plugins/**/test/**/*.spec.js",
     "test:functional": "mocha --timeout 900000 test/**/*.func.js",
-    "test": "yarn lint && yarn test:unit"
+    "test": "npm run lint && npm run test:unit"
   },
   "pkg": {
     "outputPath": "dist",
@@ -136,6 +134,5 @@
     "rimraf": "^3.0.2",
     "sinon": "^4.3.0",
     "sinon-chai": "^3.7.0"
-  },
-  "packageManager": "yarn@1.22.19+sha1.4ba7fc5c6e704fce2066ecbfb0b0d8976fe62447"
+  }
 }
