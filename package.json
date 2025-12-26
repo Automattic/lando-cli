@@ -114,7 +114,7 @@
     "object-hash": "^3.0.0",
     "semver": "^7.7.3",
     "shelljs": "^0.10.0",
-    "string-argv": "0.1.1",
+    "string-argv": "0.3.2",
     "transliteration": "^2.6.0",
     "winston": "^3.11.0",
     "yargs": "^16.1.0"
