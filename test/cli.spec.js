@@ -7,7 +7,6 @@
 
 // Setup chai.
 const _ = require('lodash');
-const art = require('./../lib/art');
 const chai = require('chai');
 const Cli = require('./../lib/cli');
 const sinon = require('sinon');
