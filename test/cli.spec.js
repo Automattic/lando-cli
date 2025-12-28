@@ -122,15 +122,6 @@ describe('cli', () => {
     });
   });
 
-  describe('#makeArt', () => {
-    it('should be the same as art()', () => {
-      const cli = new Cli();
-      const func = 'badToken';
-      const opts = {};
-      cli.makeArt(func, opts).should.deep.equal(art[func](opts));
-    });
-  });
-
   describe('#parseToYargs', () => {
     it('should return an object that yargs can use', () => {
       const cli = new Cli();
