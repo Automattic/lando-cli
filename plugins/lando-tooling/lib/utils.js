@@ -2,6 +2,7 @@
 
 // Modules
 const _ = require('lodash');
+// eslint-disable-next-line no-redeclare
 const escape = require('./../../../lib/utils').shellEscape;
 const getUser = require('./../../../lib/utils').getUser;
 const getCliEnvironment = require('./../../../lib/utils').getCliEnvironment;

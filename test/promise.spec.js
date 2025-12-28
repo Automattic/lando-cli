@@ -11,6 +11,7 @@ const sinon = require('sinon');
 chai.use(require('chai-as-promised'));
 chai.should();
 
+// eslint-disable-next-line no-redeclare
 const Promise = require('../lib/promise');
 
 describe('promise', () => {
