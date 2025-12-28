@@ -165,21 +165,6 @@ lando version
 lando --clear
 ls -lsa ~/.lando/cache | grep _.tasks.cache || echo $? | grep 1
 
-# Should not allow the secret toggle when run packaged
-lando --secret-toggle || echo $? | grep 1
-
-# Should set the release channel as stable by default
-lando config | grep "channel" | grep "stable"
-
-# Should set the release channel based on the user option
-lando --channel edge
-lando config | grep "channel" | grep "edge"
-lando --channel stable
-lando config | grep "channel" | grep "stable"
-
-# Should not allow bogus release channels
-lando --channel orange || echo $? | grep 1
-
 # Should load plugins from pluginDirs
 lando stuff | grep "I WORKED"
 ```

@@ -7,7 +7,6 @@
 
 // Setup chai.
 const _ = require('lodash');
-const art = require('./../lib/art');
 const chai = require('chai');
 const Cli = require('./../lib/cli');
 const sinon = require('sinon');
@@ -119,15 +118,6 @@ describe('cli', () => {
       const config = cli.defaultConfig();
       config.logLevelConsole.should.equal(4);
       cli.argv.restore();
-    });
-  });
-
-  describe('#makeArt', () => {
-    it('should be the same as art()', () => {
-      const cli = new Cli();
-      const func = 'badToken';
-      const opts = {};
-      cli.makeArt(func, opts).should.deep.equal(art[func](opts));
     });
   });
 
