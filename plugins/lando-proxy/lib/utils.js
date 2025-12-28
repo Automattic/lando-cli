@@ -5,6 +5,7 @@ const {Socket} = require('net');
 const _ = require('lodash');
 const hasher = require('object-hash');
 const url = require('url');
+// eslint-disable-next-line no-redeclare
 const Promise = require('../../../lib/promise');
 
 /*
@@ -169,7 +170,7 @@ exports.parseRoutes = (service, urls = [], sslReady, labels = {}) => {
     // Add in any path stripping middleware we need it
     if (rule.pathname.length > 1) {
       rule.middlewares.push({name: 'stripprefix', key: 'stripprefix.prefixes', value: rule.pathname});
-    };
+    }
     // Ensure we prefix all middleware with the ruleid
     rule.middlewares = _(rule.middlewares)
         .map(middleware => _.merge({}, middleware, {name: `${rule.id}-${middleware.name}`}))
