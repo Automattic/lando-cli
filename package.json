@@ -114,7 +114,7 @@
     "semver": "^7.7.3",
     "shelljs": "^0.10.0",
     "string-argv": "0.1.1",
-    "transliteration": "^2.6.0",
+    "transliteration": "^2.6.1",
     "winston": "^3.11.0",
     "yargs": "^16.1.0"
   },
