@@ -6,7 +6,6 @@ const _ = require('lodash');
 const escape = require('./../../../lib/utils').shellEscape;
 const getUser = require('./../../../lib/utils').getUser;
 const getCliEnvironment = require('./../../../lib/utils').getCliEnvironment;
-const path = require('path');
 
 /*
  * Build docker exec opts
