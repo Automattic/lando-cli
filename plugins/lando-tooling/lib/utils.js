@@ -9,20 +9,6 @@ const getCliEnvironment = require('./../../../lib/utils').getCliEnvironment;
 const path = require('path');
 
 /*
- * Helper to map the cwd on the host to the one in the container
- */
-const getContainerPath = appRoot => {
-  // Break up our app root and cwd so we can get a diff
-  const cwd = process.cwd().split(path.sep);
-  const dir = _.drop(cwd, appRoot.split(path.sep).length);
-  // Add our in-container app root
-  // this will always be /app
-  dir.unshift('/app');
-  // Return the directory
-  return dir.join('/');
-};
-
-/*
  * Build docker exec opts
  */
 const getExecOpts = (docker, datum) => {
@@ -117,7 +103,7 @@ exports.buildCommand = (app, command, service, user, env = {}, dir = undefined) 
   opts: {
     environment: getCliEnvironment(env),
     mode: 'attach',
-    workdir: dir || getContainerPath(app.root),
+    workdir: dir || '/app',
     user: (user === null) ? getUser(service, app.info) : user,
     services: _.compact([service]),
     hijack: false,
