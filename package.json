@@ -125,7 +125,7 @@
     "chai-as-promised": "^7.1.2",
     "chai-events": "^0.0.3",
     "command-line-test": "^1.0.10",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.2",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^62.7.0",
     "globals": "^17.3.0",
