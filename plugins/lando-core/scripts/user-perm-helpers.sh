@@ -77,7 +77,9 @@ perm_sweep() {
   local OTHER_DIR=$3
 
   # Start with the directories that are likely blockers
-  chown -R $USER:$GROUP /usr/local/bin
+  if [ -d /usr/local/bin ]; then
+    chown -R "${USER}:${GROUP}" /usr/local/bin
+  fi
   chown $USER:$GROUP /var/www
   chown $USER:$GROUP /app
   chmod 755 /var/www
@@ -89,18 +91,19 @@ perm_sweep() {
 
   # Do a background sweep
   nohup find /app -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
-  nohup find /var/www/.ssh -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
   nohup find /user/.ssh -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
   nohup find /var/www -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
-  nohup find /usr/local/bin -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
   nohup chmod -R 755 /var/www >/dev/null 2>&1 &
-
-  # Lets also make some /usr/locals chowned
-  nohup find /usr/local/lib -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
-  nohup find /usr/local/share -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
-  nohup find /usr/local -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
+  if [ -d /usr/local ]; then
+    nohup find /usr/local -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
+  fi
 
   # Make sure we chown the $USER home directory
-  nohup find $(getent passwd $USER | cut -d : -f 6) -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
+  if command -v getent > /dev/null 2>&1; then
+    home_dir="$(getent passwd $USER | cut -d : -f 6)"
+    if [ -n "${home_dir}" ] && [ -d "${home_dir}" ]; then
+      nohup find "${home_dir}" -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
+    fi
+  fi
   nohup find /lando -not -user $USER -execdir chown $USER:$GROUP {} \+ > /tmp/perms.out 2> /tmp/perms.err &
 }
