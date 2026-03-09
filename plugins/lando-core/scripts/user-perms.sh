@@ -101,4 +101,4 @@ lando_info "$LANDO_WEBROOT_USER:$LANDO_WEBROOT_GROUP is now running as $(id $LAN
 # Make sure we set the ownership of the mount and HOME when we start a service
 lando_info "And here. we. go."
 lando_info "Doing the permission sweep."
-perm_sweep $LANDO_WEBROOT_USER $(getent group "$LANDO_HOST_GID" | cut -d: -f1) $LANDO_RESET_DIR
+perm_sweep $LANDO_WEBROOT_USER "${LANDO_HOST_GID}" $LANDO_RESET_DIR

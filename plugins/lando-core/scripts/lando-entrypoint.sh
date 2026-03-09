@@ -28,7 +28,7 @@ if [ ! -f "/tmp/lando-started" ]; then
 fi
 
 # Executable all the helpers
-if [ -d "/helpers" ]; then
+if [ -d "/helpers" ] && [ -w "/helpers" ]; then
   chmod +x /helpers/* || true
 fi;
 
