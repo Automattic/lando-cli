@@ -42,7 +42,7 @@ jobs:
           password: ${{ github.token }}
           registry: https://ghcr.io
       - name: Build and push ghcr.io/automattic/vip-container-images/${{ matrix.image }}:${{ matrix.tag }}${{ steps.pr.outputs.TAG_SUFFIX }}
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ${{ matrix.context }}
           platforms: linux/amd64,linux/arm64
