@@ -22,7 +22,7 @@ describe('scan', () => {
         get: url => {
           counter[url] = counter[url] + 1 || 0;
           const last = _.last(url.split('.'));
-          let code = 200;
+          let code;
           if (_.includes(last, ':')) {
             if (_.toInteger(last.split(':')[1]) === counter[url]) code = 200;
             else code = last.split(':')[0];
