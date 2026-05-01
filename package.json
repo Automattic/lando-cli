@@ -12,7 +12,7 @@
     "url": "https://github.com/lando/cli/issues"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "main": "lib/lando.js",
   "bin": {
@@ -119,7 +119,7 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@yao-pkg/pkg": "^6.14.1",
     "chai": "^4.5.0",
     "chai-as-promised": "^7.1.2",
