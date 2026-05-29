@@ -5,7 +5,7 @@ module.exports = lando => {
     command: 'destroy',
     describe: 'Destroys your app',
     options: {
-      yes: lando.cli.confirm('Are you sure you want to DESTROY?'),
+      yes: lando.cli.confirm(),
     },
     run: options => {
       // Stop rebuild if user decides its a nogo

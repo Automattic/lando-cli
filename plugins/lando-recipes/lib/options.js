@@ -16,13 +16,6 @@ const coreOpts = sources => ({
     choices: _.map(sources, 'name'),
     alias: ['src'],
     string: true,
-    interactive: {
-      type: 'list',
-      message: 'From where should we get your app\'s codebase?',
-      default: 'cwd',
-      choices: _.map(sources, source => ({name: source.label, value: source.name})),
-      weight: 100,
-    },
   },
 });
 
@@ -64,15 +57,6 @@ const getConflicts = (name, all, lando) => _(all)
 const nameOpts = {
   describe: 'The name of the app',
   string: true,
-  interactive: {
-    type: 'input',
-    message: () => 'What do you want to call this app?',
-    default: () => 'My Lando App',
-    filter: input => utils.appMachineName(input),
-    when: () => true,
-    weight: 1000,
-    validate: () => true,
-  },
 };
 
 /**
@@ -85,31 +69,12 @@ const recipeOpts = recipes => ({
   choices: recipes,
   alias: ['r'],
   string: true,
-  interactive: {
-    type: 'list',
-    message: () => 'What recipe do you want to use?',
-    default: () => 'lamp',
-    choices: _.map(recipes, recipe => ({name: recipe, value: recipe})),
-    filter: input => input,
-    when: () => true,
-    weight: 500,
-    validate: () => true,
-  },
 });
 
 /** @type {object} */
 const webrootOpts = {
   describe: 'Specify the webroot relative to app root',
   string: true,
-  interactive: {
-    type: 'input',
-    message: () => 'Where is your webroot relative to the init destination?',
-    default: () => '.',
-    filter: input => input,
-    when: answers => true,
-    weight: 900,
-    validate: () => true,
-  },
 };
 
 /**
@@ -178,30 +143,3 @@ exports.parseOptions = options => {
   return options;
 };
 
-/**
- * Applies dynamic overrides to auxiliary init options.
- * @param {object[]} [inits] Init plugin configs.
- * @param {string[]} [recipes] Available recipe names.
- * @param {object[]} [sources] Available source definitions.
- * @returns {object} Overridden auxiliary option config.
- */
-exports.overrideOpts = (inits = [], recipes = [], sources = []) => {
-  const opts = auxOpts(recipes);
-  _.forEach(opts, (opt, key) => {
-    const isRec = key === 'recipe';
-    // NOTE: when seems like the most relevant override here, should we consider adding more?
-    // are we restricted by access to the answers hash or when these things actually run?
-    _.forEach(['when'], prop => {
-      const overrideFunc = answers => {
-        const config = isRec ? exports.getConfig(sources, answers.source) : exports.getConfig(inits, answers.recipe);
-        if (_.has(config, `overrides.${key}.${prop}`) && _.isFunction(config.overrides[key][prop])) {
-          return config.overrides[key][prop](answers);
-        } else {
-          return opt.interactive[prop](answers);
-        }
-      };
-      opts[key] = _.merge({}, {interactive: _.set({}, prop, overrideFunc)});
-    });
-  });
-  return opts;
-};
