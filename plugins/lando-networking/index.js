@@ -3,8 +3,10 @@
 // Modules
 const _ = require('lodash');
 
-/*
- * Helper to clean out any old networks when we hit the limit
+/**
+ * Prunes unused Docker networks when the daemon reaches Docker's network limit.
+ * @param {object} lando Lando runtime instance.
+ * @returns {Promise|undefined} Promise for cleanup work when pruning is needed.
  */
 const cleanNetworks = lando => lando.engine.getNetworks()
     .then(networks => {
@@ -42,6 +44,11 @@ const cleanNetworks = lando => lando.engine.getNetworks()
       }
     });
 
+/**
+ * Registers networking lifecycle hooks and default config.
+ * @param {object} lando Lando runtime instance.
+ * @returns {object} Plugin config contribution.
+ */
 module.exports = lando => {
   // Preemptively make sure we have enough networks and if we don't smartly prune some of them
   lando.events.on('pre-engine-start', 1, () => cleanNetworks(lando));

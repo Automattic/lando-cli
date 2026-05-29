@@ -5,7 +5,11 @@ const fs = require('fs');
 const path = require('path');
 const utils = require('./../../../lib/utils');
 
-// Helper to get core options
+/**
+ * Builds source-related init options.
+ * @param {object[]} sources Available source definitions.
+ * @returns {object} Source option config.
+ */
 const coreOpts = sources => ({
   source: {
     describe: 'The location of your apps code',
@@ -22,7 +26,7 @@ const coreOpts = sources => ({
   },
 });
 
-// Helper to get default options
+/** @type {object} */
 const defaultOpts = {
   destination: {
     hidden: true,
@@ -56,7 +60,7 @@ const getConflicts = (name, all, lando) => _(all)
   .value();
 */
 
-// Name Opts
+/** @type {object} */
 const nameOpts = {
   describe: 'The name of the app',
   string: true,
@@ -71,7 +75,11 @@ const nameOpts = {
   },
 };
 
-// Recipe Opts
+/**
+ * Builds recipe selection options.
+ * @param {string[]} recipes Available recipe names.
+ * @returns {object} Recipe option config.
+ */
 const recipeOpts = recipes => ({
   describe: 'The recipe with which to initialize the app',
   choices: recipes,
@@ -89,7 +97,7 @@ const recipeOpts = recipes => ({
   },
 });
 
-// Webroot Opts
+/** @type {object} */
 const webrootOpts = {
   describe: 'Specify the webroot relative to app root',
   string: true,
@@ -104,16 +112,36 @@ const webrootOpts = {
   },
 };
 
-// Helper to get a base for our dynamic opts, eg things that will change based on source/recipe selection
+/**
+ * Builds dynamic init options that depend on recipe or source choices.
+ * @param {string[]} recipes Available recipe names.
+ * @returns {object} Dynamic option config.
+ */
 const auxOpts = recipes => ({name: nameOpts, recipe: recipeOpts(_.orderBy(recipes)), webroot: webrootOpts});
 
-// Helper to get a good base of options
+/**
+ * Builds the base init option set.
+ * @param {string[]} [recipes] Available recipe names.
+ * @param {object[]} [sources] Available source definitions.
+ * @returns {object} Base option config.
+ */
 exports.baseOpts = (recipes = [], sources = []) => _.merge(defaultOpts, coreOpts(sources), auxOpts(recipes));
 
-// Helper to select the correct plugin config
+/**
+ * Finds a named init plugin config.
+ * @param {object[]} [data] Plugin config entries.
+ * @param {string} name Plugin name.
+ * @returns {object|undefined} Matching plugin config.
+ */
 exports.getConfig = (data = [], name) => _.find(data, {name});
 
-// Helper to get config options
+/**
+ * Merges dynamic option config from all init plugins.
+ * @param {object[]} all Init plugin configs.
+ * @param {object} lando Lando runtime instance.
+ * @param {object} [options] Existing options.
+ * @returns {object} Merged option config.
+ */
 exports.getConfigOptions = (all, lando, options = {}) => {
   _.forEach(all, one => {
     if (_.has(one, 'options')) {
@@ -128,7 +156,11 @@ exports.getConfigOptions = (all, lando, options = {}) => {
   return options;
 };
 
-// Helper to parse options initially
+/**
+ * Normalizes initial init command options.
+ * @param {object} options Parsed init options.
+ * @returns {object} Normalized init options.
+ */
 exports.parseOptions = options => {
   // We set this here instad of as a default option because of our task caching
   if (!_.has(options, 'destination')) options.destination = process.cwd();
@@ -146,7 +178,13 @@ exports.parseOptions = options => {
   return options;
 };
 
-// Determine whether we should override any options (just aux options for now?)
+/**
+ * Applies dynamic overrides to auxiliary init options.
+ * @param {object[]} [inits] Init plugin configs.
+ * @param {string[]} [recipes] Available recipe names.
+ * @param {object[]} [sources] Available source definitions.
+ * @returns {object} Overridden auxiliary option config.
+ */
 exports.overrideOpts = (inits = [], recipes = [], sources = []) => {
   const opts = auxOpts(recipes);
   _.forEach(opts, (opt, key) => {

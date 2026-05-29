@@ -17,9 +17,17 @@ chai.should();
 const originalPlatform = process.platform;
 
 // Helpers to manage process.platform hijacking
+/**
+ * Overrides `process.platform` for a test case.
+ * @param {string} platform Platform name to inject.
+ */
 const setPlatform = platform => {
   Object.defineProperty(process, 'platform', {value: platform});
 };
+
+/**
+ * Restores the original `process.platform` value after a test.
+ */
 const resetPlatform = () => {
   Object.defineProperty(process, 'platform', {value: originalPlatform});
 };

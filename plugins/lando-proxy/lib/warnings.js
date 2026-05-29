@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Builds the warning shown when the proxy cannot start.
+ * @param {string} message Failure detail.
+ * @returns {object} Warning payload.
+ */
 exports.cannotStartProxyWarning = message => ({
   title: 'Lando was not able to start the proxy',
   detail: [
@@ -10,6 +15,11 @@ exports.cannotStartProxyWarning = message => ({
   url: 'https://docs.lando.dev/config/proxy.html',
 });
 
+/**
+ * Builds the warning shown when a proxy route targets an unknown service.
+ * @param {string} service Service name.
+ * @returns {object} Warning payload.
+ */
 exports.unknownServiceWarning = service => ({
   title: `Proxying to unknown service "${service}"!`,
   detail: [

@@ -2,6 +2,11 @@
 
 // Modules
 
+/**
+ * Builds the warning shown when a global Drush install may be a poor fit.
+ * @param {string} version Drush version.
+ * @returns {object} Warning payload.
+ */
 exports.drushWarn = version => ({
   title: 'May need site-local drush',
   detail: [

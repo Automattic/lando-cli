@@ -8,8 +8,12 @@ const url = require('url');
 // eslint-disable-next-line no-redeclare
 const Promise = require('../../../lib/promise');
 
-/*
- * Helper to get URLs for app info and scanning purposes
+/**
+ * Expands a proxy URL into the HTTP and optional HTTPS app-info URLs.
+ * @param {object} url Parsed URL data.
+ * @param {object} ports HTTP and HTTPS port mapping.
+ * @param {boolean} [hasCerts] Whether HTTPS URLs should be emitted.
+ * @returns {string[]} URLs for app info and scanning.
  */
 const getInfoUrls = (url, ports, hasCerts = false) => {
   // Start with the default
@@ -28,9 +32,8 @@ const getInfoUrls = (url, ports, hasCerts = false) => {
  * It will use the first port with `status === false` for the proxy. However, if looking for an available port,
  * the status of `false` will mean that we failed to connect to it, but that does not mean we can listen on it (e.g., because of ETIMEDOUT).
  * That is why we have to invert the meaning of the status.
- *
  * @param {string[]} urls An array of URLs to scan for unavailable ports.
- * @return {Promise<Array>} An array of objects of the form {url: url, status: boolean}. If `status === true`, the port is available.
+ * @returns {Promise<object[]>} Objects of the form {url, status}; `status === true` means the port is available.
  */
 exports.findUnavailablePorts = urls => {
   return Promise.map(urls, (url => {
@@ -71,16 +74,23 @@ exports.findUnavailablePorts = urls => {
   }));
 };
 
-/*
- * Reduces urls to first open port
+/**
+ * Resolves the first unavailable port reported by the scanner.
+ * @param {function(string[], object): Promise} scanner Port scanner.
+ * @param {string[]} [urls] URLs to inspect.
+ * @returns {Promise} Promise resolving to the first matching port.
  */
 exports.getFirstOpenPort = (scanner, urls = []) => scanner(urls, {max: 1, waitCodes: []})
     .filter(url => url.status === false)
     .map(port => _.last(port.url.split(':')))
     .then(ports => ports[0]);
 
-/*
- * Helper to determine what ports have changed
+/**
+ * Computes which proxy protocols still need rescanning.
+ * @param {object} current Current port mapping.
+ * @param {object} last Previous port mapping.
+ * @param {{http: boolean, https: boolean}} [status] Existing scan status.
+ * @returns {{http: boolean, https: boolean}} Updated scan status.
  */
 exports.needsProtocolScan = (current, last, status = {http: true, https: true}) => {
   if (!last) return status;
@@ -89,8 +99,11 @@ exports.needsProtocolScan = (current, last, status = {http: true, https: true}) 
   return status;
 };
 
-/*
- * Helper to get proxy runner
+/**
+ * Builds compose runner data for the proxy service.
+ * @param {string} project Compose project name.
+ * @param {string[]} files Compose files.
+ * @returns {object} Engine run descriptor.
  */
 exports.getProxyRunner = (project, files) => ({
   compose: files,
@@ -101,8 +114,10 @@ exports.getProxyRunner = (project, files) => ({
   },
 });
 
-/*
- * Helper to get the trafix rule
+/**
+ * Builds a Traefik routing rule from parsed URL data.
+ * @param {object} rule Parsed proxy rule.
+ * @returns {string} Traefik rule expression.
  */
 exports.getRule = rule => {
   // Start with the rule we can assume
@@ -113,8 +128,10 @@ exports.getRule = rule => {
   return rules.join(' && ');
 };
 
-/*
- * Get a list of URLs and their counts
+/**
+ * Counts duplicate host, path, and port combinations across proxy config.
+ * @param {object} config Proxy config keyed by service.
+ * @returns {object} Counts keyed by host, path, and port.
  */
 exports.getUrlsCounts = config => _(config)
     .flatMap(service => service)
@@ -123,16 +140,22 @@ exports.getUrlsCounts = config => _(config)
     .countBy()
     .value();
 
-/*
- * Parse config into urls we can merge to app.info
+/**
+ * Expands proxied URLs into app-info URLs.
+ * @param {string[]} urls Proxy URLs.
+ * @param {object} ports HTTP and HTTPS port mapping.
+ * @param {boolean} [hasCerts] Whether HTTPS URLs should be emitted.
+ * @returns {string[]} App-info URLs.
  */
 exports.parse2Info = (urls, ports, hasCerts = false) => _(urls)
     .map(url => exports.parseUrl(url))
     .flatMap(url => getInfoUrls(url, ports, hasCerts))
     .value();
 
-/*
- * Parse urls into SANS
+/**
+ * Builds SAN entries for all proxied hosts.
+ * @param {string[]} urls Proxy URLs.
+ * @returns {string} SAN entries separated by newlines.
  */
 exports.parse2Sans = urls => _(urls)
     .map(url => exports.parseUrl(url).host)
@@ -140,8 +163,11 @@ exports.parse2Sans = urls => _(urls)
     .value()
     .join('\n');
 
-/*
- * Parse hosts for traefik
+/**
+ * Builds per-service proxy config for Traefik.
+ * @param {object} config Proxy config keyed by service.
+ * @param {string[]} [sslReady] Services that can terminate TLS.
+ * @returns {object[]} Proxy config fragments.
  */
 exports.parseConfig = (config, sslReady = []) => _(config)
     .map((urls, service) => ({
@@ -152,8 +178,13 @@ exports.parseConfig = (config, sslReady = []) => _(config)
       labels: exports.parseRoutes(service, urls, sslReady)}))
     .value();
 
-/*
- * Helper to parse the routes
+/**
+ * Converts service URLs into Traefik labels.
+ * @param {string} service Service name.
+ * @param {string[]} [urls] Service URLs.
+ * @param {string[]} sslReady Services that can terminate TLS.
+ * @param {object} [labels] Existing labels.
+ * @returns {object} Traefik labels.
  */
 exports.parseRoutes = (service, urls = [], sslReady, labels = {}) => {
   // Prepare our URLs for traefik
@@ -207,10 +238,10 @@ exports.parseRoutes = (service, urls = [], sslReady, labels = {}) => {
   });
   return labels;
 };
-
-
-/*
- * Helper to parse a url
+/**
+ * Parses proxy URL input and applies Lando defaults.
+ * @param {string|object} data Proxy URL input.
+ * @returns {object} Parsed URL config with defaults applied.
  */
 exports.parseUrl = data => {
   // We add the protocol ourselves, so it can be parsed. We also change all *
@@ -228,8 +259,12 @@ exports.parseUrl = data => {
   return _.merge(defaults, parsedUrl, {host: parsedUrl.hostname.replace(/__wildcard__/g, '*')});
 };
 
-/*
- * Maps ports to urls
+/**
+ * Maps local ports to HTTP or HTTPS URLs.
+ * @param {Array<string|number>} ports Ports to map.
+ * @param {boolean} [secure] Whether to emit https URLs.
+ * @param {string} [hostname] Hostname to use in generated URLs.
+ * @returns {string[]} Generated URLs.
  */
 exports.ports2Urls = (ports, secure = false, hostname = '127.0.0.1') => _(ports)
     .map(port => url.format({protocol: (secure) ? 'https' : 'http', hostname, port}))

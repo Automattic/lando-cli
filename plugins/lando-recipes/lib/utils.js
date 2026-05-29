@@ -31,13 +31,17 @@ const postgresCli = {
   },
 };
 
-/*
- * Helper to get DRUSH phar url
+/**
+ * Builds the release URL for a Drush phar.
+ * @param {string} version Drush version.
+ * @returns {string} Download URL.
  */
 const getDrushUrl = version => `https://github.com/drush-ops/drush/releases/download/${version}/drush.phar`;
 
-/*
- * Helper to get the phar build command
+/**
+ * Returns default database tooling for a recipe's database service.
+ * @param {string} database Database type, optionally including a version.
+ * @returns {object|undefined} Tooling config keyed by command name.
  */
 exports.getDbTooling = database => {
   // Make sure we strip out any version number
@@ -55,8 +59,11 @@ exports.getDbTooling = database => {
   }
 };
 
-/*
- * Helper to get the phar build command
+/**
+ * Builds the Drush phar installation command.
+ * @param {string} version Drush version.
+ * @param {string|string[]} status Verification command or commands.
+ * @returns {string} Installation command chain.
  */
 exports.getDrush = (version, status) => exports.getPhar(
     getDrushUrl(version),
@@ -65,9 +72,13 @@ exports.getDrush = (version, status) => exports.getPhar(
     status,
 );
 
-/*
- * Helper to get a phar download and setupcommand
- * @TODO: clean this mess up
+/**
+ * Builds a command chain that downloads, installs, and verifies a phar binary.
+ * @param {string} url Download URL.
+ * @param {string} src Temporary download path.
+ * @param {string} dest Final install path.
+ * @param {string|string[]} [check] Verification command or commands.
+ * @returns {string} Installation command chain.
  */
 exports.getPhar = (url, src, dest, check = 'true') => {
   // Arrayify the check if needed
@@ -83,8 +94,11 @@ exports.getPhar = (url, src, dest, check = 'true') => {
   return _.map(pharInstall, cmd => cmd.join(' ')).join(' && ');
 };
 
-/*
- * Helper to get service config
+/**
+ * Collects relevant service config file paths from recipe options.
+ * @param {object} options Recipe options.
+ * @param {string[]} [types] Config sections to inspect.
+ * @returns {object} Service config keyed by type.
  */
 exports.getServiceConfig = (options, types = ['php', 'server', 'vhosts']) => {
   const config = {};
@@ -100,8 +114,11 @@ exports.getServiceConfig = (options, types = ['php', 'server', 'vhosts']) => {
   return config;
 };
 
-/*
- * Parse config into raw materials for our factory
+/**
+ * Expands recipe config into the normalized object used by the factory.
+ * @param {string} recipe Recipe name.
+ * @param {object} app App instance.
+ * @returns {object} Normalized recipe config.
  */
 exports.parseConfig = (recipe, app) => _.merge({}, _.get(app, 'config.config', {}), {
   _app: app,

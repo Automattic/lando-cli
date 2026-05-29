@@ -4,7 +4,11 @@
 const _ = require('lodash');
 const getUser = require('./../../../lib/utils').getUser;
 
-// Helper to find the default service
+/**
+ * Resolves the default service name for an event command.
+ * @param {object} data Event command metadata.
+ * @returns {string} Service name.
+ */
 const getDefaultService = data => {
   if (_.has(data, 'service')) {
     if (_.startsWith(data.service, ':')) {
@@ -18,19 +22,36 @@ const getDefaultService = data => {
   }
 };
 
-// Helper to find a command
+/**
+ * Extracts the command string or argv from an event command definition.
+ * @param {string|object} cmd Event command definition.
+ * @returns {string|string[]} Command payload.
+ */
 const getCommand = cmd => typeof cmd === 'object' ? cmd[getFirstKey(cmd)] : cmd;
 
-// Key find helper
+/**
+ * Returns the first key from an object.
+ * @param {object} obj Object to inspect.
+ * @returns {string|undefined} First key.
+ */
 const getFirstKey = obj => _.first(_.keys(obj));
 
-// Helper to find a service
+/**
+ * Resolves the target service for an event command.
+ * @param {string|object} cmd Event command definition.
+ * @param {object} [data] Event command metadata.
+ * @returns {string} Service name.
+ */
 const getService = (cmd, data = {}) => {
   return typeof cmd === 'object' ? getFirstKey(cmd) : getDefaultService(data);
 };
 
-/*
- * Translate events into run objects
+/**
+ * Translates event command definitions into engine run tasks.
+ * @param {Array<string|object>} cmds Event command definitions.
+ * @param {object} app App instance.
+ * @param {object} [data] Event command metadata.
+ * @returns {object[]} Engine run tasks.
  */
 exports.events2Runz = (cmds, app, data = {}) => _.map(cmds, cmd => {
   // Discover the service

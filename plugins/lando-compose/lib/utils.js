@@ -4,14 +4,19 @@
 const _ = require('lodash');
 const path = require('path');
 
-/*
- * Helper method to get the host part of a volume
+/**
+ * Extracts the host-side path from a compose volume declaration.
+ * @param {string} mount Compose volume declaration.
+ * @returns {string} Host-side path.
  */
 exports.getHostPath = mount => _.dropRight(mount.split(':')).join(':');
 
-/*
- * Helper method to normalize a path so that Lando overrides can be used as though
- * the docker-compose files were in the app root.
+/**
+ * Normalizes override paths as if docker compose files lived at the app root.
+ * @param {string} local Relative or absolute path.
+ * @param {string} [base] Base directory for relative paths.
+ * @param {string[]} [excludes] Paths that should be left untouched.
+ * @returns {string} Normalized path.
  */
 exports.normalizePath = (local, base = '.', excludes = []) => {
   // Return local if it starts with $ or ~
@@ -24,8 +29,12 @@ exports.normalizePath = (local, base = '.', excludes = []) => {
   return path.resolve(path.join(base, local));
 };
 
-/*
- * Helper to normalize overrides
+/**
+ * Normalizes build, volume, and env_file paths inside compose overrides.
+ * @param {object} overrides Compose overrides.
+ * @param {string} [base] Base directory for relative paths.
+ * @param {object} [volumes] Named volumes that should not be rewritten.
+ * @returns {object} Mutated override object.
  */
 exports.normalizeOverrides = (overrides, base = '.', volumes = {}) => {
   // Normalize any build paths

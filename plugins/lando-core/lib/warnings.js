@@ -3,6 +3,10 @@
 // Modules
 const _ = require('lodash');
 
+/**
+ * Builds the warning shown when too many SSH keys are detected.
+ * @returns {object} Warning payload.
+ */
 exports.maxKeyWarning = () => ({
   title: 'You have a lot of keys!',
   detail: [
@@ -13,6 +17,10 @@ exports.maxKeyWarning = () => ({
   url: 'https://docs.lando.dev/config/ssh.html#customizing',
 });
 
+/**
+ * Builds the warning shown when an app was built with a different Lando version.
+ * @returns {object} Warning payload.
+ */
 exports.rebuildWarning = () => ({
   title: 'This app was built on a different version of Lando.',
   detail: [
@@ -23,18 +31,37 @@ exports.rebuildWarning = () => ({
   command: 'lando rebuild',
 });
 
+/**
+ * Builds the warning shown when a service is not running.
+ * @param {string} service Service name.
+ * @returns {object} Warning payload.
+ */
 exports.serviceNotRunningWarning = service => ({
   title: `The service "${service}" is not running!`,
   detail: ['This is likely a critical problem and we recommend you run the command below to investigate'],
   command: `lando logs -s ${service}`,
 });
 
+/**
+ * Builds the warning shown when a service healthcheck fails.
+ * @param {string} service Service name.
+ * @returns {object} Warning payload.
+ */
 exports.serviceUnhealthyWarning = service => ({
   title: `The service "${service}" failed its healthcheck`,
   detail: ['This may be ok but we recommend you run the command below to investigate:'],
   command: `lando logs -s ${service}`,
 });
 
+/**
+ * Builds the warning shown when Docker is outside the supported version range.
+ * @param {object} warning Warning context.
+ * @param {string} warning.name Docker dependency name.
+ * @param {string} warning.version Detected version.
+ * @param {string} warning.wants Supported semver range.
+ * @param {string} warning.link Help URL.
+ * @returns {object} Warning payload.
+ */
 exports.unsupportedVersionWarning = ({name, version, wants, link}) => ({
   title: `Using an unsupported version of DOCKER ${_.upperCase(name)}`,
   detail: [
