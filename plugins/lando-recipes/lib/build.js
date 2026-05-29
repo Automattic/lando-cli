@@ -40,7 +40,7 @@ exports.buildRun = config => ({
 
 /**
  * Runs recipe initialization and cleans up failed init containers.
- * @param {object} lando Lando runtime instance.
+ * @param {import('../../../lib/lando')} lando Lando runtime instance.
  * @param {object} run Engine run descriptor.
  * @returns {Promise} Promise for the recipe init workflow.
  */
@@ -52,7 +52,7 @@ exports.run = (lando, run) => lando.engine.run(run).catch(err => {
 
 /**
  * Builds default run settings for recipe initialization.
- * @param {object} lando Lando runtime instance.
+ * @param {import('../../../lib/lando')} lando Lando runtime instance.
  * @param {object} options Init command options.
  * @returns {object} Default run descriptor.
  */

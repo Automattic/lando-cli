@@ -7,7 +7,7 @@ const utils = require('./utils');
 /**
  * Builds a tooling task definition from metadata.
  * @param {object} config Tooling task config.
- * @param {object} injected Runtime services and helpers.
+ * @param {import('../../../lib/app')|import('../../../lib/lando')} injected Runtime services and helpers.
  * @returns {object} Tooling task definition.
  */
 module.exports = (config, injected) => {

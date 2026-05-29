@@ -93,7 +93,7 @@ exports.normalizeOverrides = (overrides, base = '.', volumes = {}) => {
 
 /**
  * Builds CLI table data for app start output.
- * @param {object} app App metadata.
+ * @param {import('../../../lib/app')} app App metadata.
  * @returns {object} CLI table rows.
  */
 exports.startTable = app => {

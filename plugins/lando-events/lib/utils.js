@@ -49,7 +49,7 @@ const getService = (cmd, data = {}) => {
 /**
  * Translates event command definitions into engine run tasks.
  * @param {Array<string|object>} cmds Event command definitions.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @param {object} [data] Event command metadata.
  * @returns {object[]} Engine run tasks.
  */

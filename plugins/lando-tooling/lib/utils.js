@@ -105,7 +105,7 @@ const parseCommand = (cmd, service) => ({
 
 /**
  * Builds an engine run task for a tooling command.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @param {string|string[]} command Tooling command.
  * @param {string} service Service name.
  * @param {string|null} user User override.
@@ -131,7 +131,7 @@ exports.buildCommand = (app, command, service, user, env = {}, dir = undefined) 
 
 /**
  * Runs a docker exec command for a tooling task.
- * @param {object} injected App or lando runtime object.
+ * @param {import('../../../lib/app')|import('../../../lib/lando')} injected App or lando runtime object.
  * @param {Array<string|null>} stdio stdio configuration.
  * @param {object} [datum] Engine task data.
  * @returns {Promise} Promise for the shell execution.
@@ -147,7 +147,7 @@ exports.dockerExec = (injected, stdio, datum = {}) => {
 /**
  * Normalizes tooling task config into task metadata.
  * @param {object} config Tooling config keyed by task name.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @returns {object[]} Tooling tasks.
  */
 exports.getToolingTasks = (config, app) => _(config)
