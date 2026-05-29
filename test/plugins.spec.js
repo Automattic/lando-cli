@@ -9,7 +9,6 @@
 const _ = require('lodash');
 const chai = require('chai');
 const sinon = require('sinon');
-const fs = require('fs');
 const expect = chai.expect;
 const filesystem = require('mock-fs');
 chai.use(require('chai-as-promised'));
@@ -18,7 +17,7 @@ const os = require('os');
 const path = require('path');
 const Plugins = require('./../lib/plugins');
 
-const testPlugin = fs.readFileSync(path.resolve(__dirname, '..', 'plugins', 'lando-test', 'index.js'), 'utf8');
+const testPlugin = `module.exports = injected => ({'plugin-test': true});`;
 const searchDirs = [
   path.join(os.tmpdir(), 'dir1'),
   path.join(os.tmpdir(), 'dir2'),
