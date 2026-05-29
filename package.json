@@ -86,9 +86,7 @@
       "plugins/**/*.vcl",
       "plugins/**/*.xml",
       "plugins/**/*.yaml",
-      "plugins/**/*.yml",
-      "node_modules/figlet/fonts/Small Slant.flf",
-      "node_modules/figlet/fonts/ANSI Shadow.flf"
+      "plugins/**/*.yml"
     ],
     "dictionary": {
       "axios": {
