@@ -1,5 +1,4 @@
 product: lando
-hyperdrive: hyperdrive
 channel: stable
 domain: lndo.site
 mode: cli
