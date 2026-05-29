@@ -13,7 +13,7 @@ module.exports = lando => {
         alias: ['s'],
         array: true,
       },
-      yes: lando.cli.confirm('Are you sure you want to rebuild?'),
+      yes: lando.cli.confirm(),
     },
     run: options => {
       if (!options.yes) {

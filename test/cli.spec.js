@@ -28,21 +28,10 @@ const fakeTask = {
       alias: ['y'],
       default: false,
       boolean: true,
-      interactive: {
-        type: 'confirm',
-        default: false,
-        message: 'Are you ok?',
-      },
     },
     other: {
       describe: 'some other thing',
       string: true,
-      interactive: {
-        type: 'input',
-        message: 'what is it?',
-        default: 'nothing',
-        weight: 4,
-      },
     },
   },
   run: options => options,
