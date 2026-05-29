@@ -78,13 +78,6 @@ describe('cli', () => {
     });
   });
 
-  describe('#checkPerms', () => {
-    it('should be the same as sudoBlock', () => {
-      const cli = new Cli();
-      cli.checkPerms();
-    });
-  });
-
   describe('#defaultConfig', () => {
     it('should return default config object that can be used to bootstrap a lando cli', () => {
       const cli = new Cli();
