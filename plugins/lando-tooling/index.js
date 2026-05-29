@@ -3,6 +3,11 @@
 // Modules
 const _ = require('lodash');
 
+/**
+ * Registers tooling-related runtime event handlers.
+ * @param {object} lando Lando runtime instance.
+ * @returns {void} No return value.
+ */
 module.exports = lando => {
   // Set a different default if needed
   lando.events.on('cli-ssh-run', 2, data => {

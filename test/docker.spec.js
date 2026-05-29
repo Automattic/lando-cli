@@ -19,6 +19,11 @@ const Dockerode = require('dockerode');
 const Promise = require('./../lib/promise');
 const _ = require('lodash');
 
+/**
+ * Builds a Dockerode container stub with overridable metadata.
+ * @param {object} [overrides] Fields to merge onto the stub container.
+ * @returns {object} Dockerode container test double.
+ */
 const dummyContainer = (overrides = {}) => {
   return _.assign(
       new Dockerode.Container(),

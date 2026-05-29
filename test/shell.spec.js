@@ -20,11 +20,23 @@ chai.use(require('chai-as-promised'));
 chai.should();
 
 // Return mock error code based on commands
+/**
+ * Returns a deterministic fake exit code for a command string.
+ * @param {string} cmd Command string under test.
+ * @returns {number} Zero for success-like commands, random non-zero for failures.
+ */
 const errorCode = cmd => {
   return !_.includes(cmd, 'bomb') ? 0 : _.random(1, 666);
 };
 
 // Fake Spawner
+/**
+ * Creates a fake `child_process.spawn()` result for shell tests.
+ * @param {string} cmd Command binary.
+ * @param {string[]} args Command arguments.
+ * @param {object} opts Spawn options.
+ * @returns {object} Spawn-like process stub.
+ */
 const fakeSpawn = (cmd, args, opts) => {
   const command = cmd + ' ' + args.join(' ');
   return {
@@ -41,6 +53,12 @@ const fakeSpawn = (cmd, args, opts) => {
 };
 
 // Fake execer
+/**
+ * Resolves a fake `shelljs.exec()` call for shell tests.
+ * @param {string} cmd Command string.
+ * @param {object} opts Exec options.
+ * @param {function(number, string, string): void} resolve Callback used by `shelljs.exec()`.
+ */
 const fakeExec = (cmd, opts, resolve) => {
   resolve(errorCode(cmd), 'EXEC: ' + cmd, '');
 };

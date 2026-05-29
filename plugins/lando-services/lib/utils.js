@@ -5,9 +5,14 @@ const _ = require('lodash');
 const getUser = require('./../../../lib/utils').getUser;
 const path = require('path');
 
-/*
- * Helper to get global deps
- * @TODO: this looks pretty testable? should services have libs?
+/**
+ * Adds build commands to a service-specific build section.
+ * @param {string|string[]} steps Commands to add.
+ * @param {object} app App config container.
+ * @param {string} name Service name.
+ * @param {string} [step] Build section name.
+ * @param {boolean} [front] Whether to prepend the new steps.
+ * @returns {void}
  */
 exports.addBuildStep = (steps, app, name, step = 'build_internal', front = false) => {
   const current = _.get(app, `config.services.${name}.${step}`, []);
@@ -15,9 +20,10 @@ exports.addBuildStep = (steps, app, name, step = 'build_internal', front = false
   _.set(app, `config.services.${name}.${step}`, _.uniq(add));
 };
 
-/*
- * Helper to get global deps
- * @TODO: this looks pretty testable? should services have libs?
+/**
+ * Clones overrides and removes image/build keys that should not be inherited.
+ * @param {object} [overrides] Service overrides.
+ * @returns {object} Sanitized override clone.
  */
 exports.cloneOverrides = (overrides = {}) => {
   const newOverrides = _.cloneDeep(overrides);
@@ -26,17 +32,26 @@ exports.cloneOverrides = (overrides = {}) => {
   return newOverrides;
 };
 
-/*
- * Helper to get global deps
- * @TODO: this looks pretty testable? should services have libs?
+/**
+ * Builds install commands for a dependency map.
+ * @param {object} deps Dependencies keyed by package name.
+ * @param {function(string, string): string[]} pkger Package command builder.
+ * @param {string[]} [prefix] Command prefix tokens.
+ * @returns {string[]} Install commands.
  */
 exports.getInstallCommands = (deps, pkger, prefix = []) => _(deps)
     .map((version, pkg) => _.flatten([prefix, pkger(pkg, version)]))
     .map(command => command.join(' '))
     .value();
 
-/*
- * Filter and map build steps
+/**
+ * Expands configured build sections into engine run tasks.
+ * @param {string[]} services Service names to inspect.
+ * @param {object} app App instance.
+ * @param {string[]} [rootSteps] Build sections that must run as root.
+ * @param {string[]} [buildSteps] User build sections.
+ * @param {boolean} [prestart] Whether the tasks run before container startup.
+ * @returns {object[]} Engine run tasks.
  */
 exports.filterBuildSteps = (services, app, rootSteps = [], buildSteps= [], prestart = false) => {
   // Start collecting them
@@ -91,8 +106,11 @@ exports.filterBuildSteps = (services, app, rootSteps = [], buildSteps= [], prest
   return build;
 };
 
-/*
- * Parse config into raw materials for our factory
+/**
+ * Normalizes service config into factory-ready service definitions.
+ * @param {object} config Service config keyed by service name.
+ * @param {object} app App instance.
+ * @returns {object[]} Normalized service definitions.
  */
 exports.parseConfig = (config, app) => _(config)
 // Arrayify
@@ -116,8 +134,13 @@ exports.parseConfig = (config, app) => _(config)
     }))
     .value();
 
-/*
- * Run build
+/**
+ * Runs build steps and writes the successful lock hash to cache.
+ * @param {object} app App instance.
+ * @param {object[]} steps Engine run tasks.
+ * @param {string} lockfile Cache key for the build lock.
+ * @param {string} [hash] Hash value to persist on success.
+ * @returns {Promise|undefined} Promise for the build, or undefined when skipped.
  */
 exports.runBuild = (app, steps, lockfile, hash = 'YOU SHALL NOT PASS') => {
   if (!_.isEmpty(steps) && !app._lando.cache.get(lockfile)) {

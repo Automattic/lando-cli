@@ -1,12 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * Main CLI entrypoint to use the lando libraries
+ * Main CLI entrypoint to use the lando libraries.
  * This file is meant to be linked as a "lando" executable.
- *
- * @NOTE: We are duplicating a lot of code here because its less expensive than requiring our lando libs and
- * the users have a need for speed
- *
+ * We duplicate a small amount of setup code here because it is cheaper than
+ * requiring the full Lando runtime before command dispatch.
  * @name lando
  */
 

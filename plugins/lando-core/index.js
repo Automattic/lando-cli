@@ -40,8 +40,7 @@ const uc = (uid, gid, username) => ({
 
 /**
  * Emulates the behavior of `ip.address()`: returns the first address with `ipv4` or loopback address `127.0.0.1`.
- *
- * @return {string}
+ * @returns {string} Host IPv4 address or loopback fallback.
  */
 const hostIp = () => {
   const interfaces = networkInterfaces();

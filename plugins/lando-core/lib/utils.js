@@ -6,13 +6,20 @@ const chalk = require('chalk');
 const path = require('path');
 const url = require('url');
 
-/*
- * Helper method to get the host part of a volume
+/**
+ * Extracts the host-side path from a compose volume declaration.
+ * @param {string} mount Compose volume declaration.
+ * @returns {string} Host-side path.
  */
 exports.getHostPath = mount => _.dropRight(mount.split(':')).join(':');
 
-/*
- * Takes inspect data and extracts all the exposed ports
+/**
+ * Builds localhost URLs from docker inspect port metadata.
+ * @param {object} data Docker inspect payload.
+ * @param {string[]} [scan] Ports that should be exposed in app info.
+ * @param {string[]} [secured] Ports that should use https.
+ * @param {string} [bindAddress] Expected host bind address.
+ * @returns {object} Service name with its resolved URLs.
  */
 exports.getUrls = (data, scan = ['80, 443'], secured = ['443'], bindAddress = '127.0.0.1') => {
   return _(_.merge(_.get(data, 'Config.ExposedPorts', []), {'443/tcp': {}}))
@@ -32,9 +39,12 @@ exports.getUrls = (data, scan = ['80, 443'], secured = ['443'], bindAddress = '1
       .value();
 };
 
-/*
- * Helper method to normalize a path so that Lando overrides can be used as though
- * the docker-compose files were in the app root.
+/**
+ * Normalizes override paths as if docker compose files lived at the app root.
+ * @param {string} local Relative or absolute path.
+ * @param {string} [base] Base directory for relative paths.
+ * @param {string[]} [excludes] Paths that should be left untouched.
+ * @returns {string} Normalized path.
  */
 exports.normalizePath = (local, base = '.', excludes = []) => {
   // Return local if it starts with $ or ~
@@ -47,8 +57,12 @@ exports.normalizePath = (local, base = '.', excludes = []) => {
   return path.resolve(path.join(base, local));
 };
 
-/*
- * Helper to normalize overrides
+/**
+ * Normalizes build and volume paths inside a compose override block.
+ * @param {object} overrides Compose overrides.
+ * @param {string} [base] Base directory for relative paths.
+ * @param {object} [volumes] Named volumes that should not be rewritten.
+ * @returns {object} Mutated override object.
  */
 exports.normalizeOverrides = (overrides, base = '.', volumes = {}) => {
   // Normalize any build paths
@@ -77,8 +91,10 @@ exports.normalizeOverrides = (overrides, base = '.', volumes = {}) => {
   return overrides;
 };
 
-/*
- * Returns a CLI table with app start metadata info
+/**
+ * Builds CLI table data for app start output.
+ * @param {object} app App metadata.
+ * @returns {object} CLI table rows.
  */
 exports.startTable = app => {
   const data = {
@@ -110,13 +126,17 @@ exports.startTable = app => {
   return data;
 };
 
-/*
- * Helper to strip the patch version
+/**
+ * Drops the patch segment from a semantic version string.
+ * @param {string} version Semantic version string.
+ * @returns {string} Major and minor version.
  */
 exports.stripPatch = version => _.slice(version.split('.'), 0, 2).join('.');
 
-/*
- * Helper to help us allow wildcard patch versions eg when there is no minor version tag available
+/**
+ * Converts wildcard patch versions into major-minor versions.
+ * @param {string[]} versions Version strings to normalize.
+ * @returns {string[]} Normalized version strings.
  */
 exports.stripWild = versions => _(versions)
     .map(version => (version.split('.')[2] === 'x') ? _.slice(version.split('.'), 0, 2).join('.') : version)

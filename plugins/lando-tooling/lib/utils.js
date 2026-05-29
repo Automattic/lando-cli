@@ -7,8 +7,11 @@ const escape = require('./../../../lib/utils').shellEscape;
 const getUser = require('./../../../lib/utils').getUser;
 const getCliEnvironment = require('./../../../lib/utils').getCliEnvironment;
 
-/*
- * Build docker exec opts
+/**
+ * Builds docker exec argv for a tooling task.
+ * @param {string} docker Docker executable path.
+ * @param {object} datum Engine task data.
+ * @returns {string[]} Docker exec argv.
  */
 const getExecOpts = (docker, datum) => {
   const exec = [docker, 'exec'];
@@ -30,8 +33,11 @@ const getExecOpts = (docker, datum) => {
   return exec;
 };
 
-/*
- * Helper to get dynamic service keys for stripping
+/**
+ * Finds argv switches that correspond to a selected dynamic service answer.
+ * @param {string} answer Selected answer.
+ * @param {object} [answers] All interactive answers.
+ * @returns {string[]} Arg keys that should be stripped from passthrough argv.
  */
 const getDynamicKeys = (answer, answers = {}) => _(answers)
     .map((value, key) => ({key, value}))
@@ -40,11 +46,12 @@ const getDynamicKeys = (answer, answers = {}) => _(answers)
     .map(key => (_.size(key) === 1) ? `-${key}` : `--${key}`)
     .value();
 
-/*
- * Helper to handle dynamic services
- *
- * Set SERVICE from answers and strip out that noise from the rest of
- * stuff, check answers/argv for --service or -s, validate and then remove
+/**
+ * Resolves dynamic service placeholders from interactive answers.
+ * @param {object} config Tooling config.
+ * @param {object} [options] Tooling option metadata.
+ * @param {object} [answers] Interactive answers.
+ * @returns {object} Updated tooling config.
  */
 const handleDynamic = (config, options = {}, answers = {}) => {
   if (_.startsWith(config.service, ':')) {
@@ -58,12 +65,11 @@ const handleDynamic = (config, options = {}, answers = {}) => {
   }
 };
 
-/*
- * Helper to process args
- *
- * We assume pass through commands so let's use argv directly and strip out
- * the first three assuming they are [node, lando.js, options.name]'
- * Check to see if we have global lando opts and remove them if we do
+/**
+ * Appends passthrough argv to a tooling config.
+ * @param {object} config Tooling config.
+ * @param {string[]} [argopts] Explicit passthrough args.
+ * @returns {object} Updated tooling config.
  */
 const handleOpts = (config, argopts = []) => {
   // Append any user specificed opts
@@ -74,8 +80,11 @@ const handleOpts = (config, argopts = []) => {
   return _.merge({}, config, {args: argopts});
 };
 
-/*
- * Helper to get passthru options
+/**
+ * Converts passthrough options into argv fragments.
+ * @param {object} [options] Tooling option metadata.
+ * @param {object} [answers] Interactive answers.
+ * @returns {string[]} Passthrough argv fragments.
  */
 const handlePassthruOpts = (options = {}, answers = {}) => _(options)
     .map((value, key) => _.merge({}, {name: key}, value))
@@ -83,16 +92,26 @@ const handlePassthruOpts = (options = {}, answers = {}) => _(options)
     .map(value => `--${value.name}=${answers[value.name]}`)
     .value();
 
-/*
- * Helper to convert a command into config object
+/**
+ * Normalizes a tooling command into a config object.
+ * @param {string|object} cmd Tooling command definition.
+ * @param {string} service Default service name.
+ * @returns {{command: string|string[], service: string}} Normalized command config.
  */
 const parseCommand = (cmd, service) => ({
   command: (_.isObject(cmd)) ? cmd[_.first(_.keys(cmd))] : cmd,
   service: (_.isObject(cmd)) ? _.first(_.keys(cmd)) : service,
 });
 
-/*
- * Helper to build commands
+/**
+ * Builds an engine run task for a tooling command.
+ * @param {object} app App instance.
+ * @param {string|string[]} command Tooling command.
+ * @param {string} service Service name.
+ * @param {string|null} user User override.
+ * @param {object} [env] Extra environment variables.
+ * @param {string} [dir] Working directory override.
+ * @returns {object} Engine run task.
  */
 exports.buildCommand = (app, command, service, user, env = {}, dir = undefined) => ({
   id: app.getServiceContainerId(service),
@@ -110,8 +129,12 @@ exports.buildCommand = (app, command, service, user, env = {}, dir = undefined) 
   },
 });
 
-/*
- * Helper to build docker exec command
+/**
+ * Runs a docker exec command for a tooling task.
+ * @param {object} injected App or lando runtime object.
+ * @param {Array<string|null>} stdio stdio configuration.
+ * @param {object} [datum] Engine task data.
+ * @returns {Promise} Promise for the shell execution.
  */
 exports.dockerExec = (injected, stdio, datum = {}) => {
   // Depending on whether injected is the app or lando
@@ -121,16 +144,24 @@ exports.dockerExec = (injected, stdio, datum = {}) => {
   return injected.shell.sh(getExecOpts(dockerBin, datum).concat(datum.cmd), opts);
 };
 
-/*
- * Helper to get tts
+/**
+ * Normalizes tooling task config into task metadata.
+ * @param {object} config Tooling config keyed by task name.
+ * @param {object} app App instance.
+ * @returns {object[]} Tooling tasks.
  */
 exports.getToolingTasks = (config, app) => _(config)
     .map((task, name) => _.merge({}, task, {app, name}))
     .filter(task => _.isObject(task))
     .value();
 
-/*
- * Helper to parse tooling config options
+/**
+ * Resolves tooling config into executable command configs.
+ * @param {Array<string|object>} cmd Tooling commands.
+ * @param {string} service Default service name.
+ * @param {object} [options] Tooling option metadata.
+ * @param {object} [answers] Interactive answers.
+ * @returns {object[]} Parsed tooling command configs.
  */
 exports.parseConfig = (cmd, service, options = {}, answers = {}) => _(cmd)
 // Put into an object so we can handle "multi-service" tooling
@@ -146,30 +177,35 @@ exports.parseConfig = (cmd, service, options = {}, answers = {}) => _(cmd)
 // Put into an object
     .value();
 
-/*
- * Helper to get defaults
+/**
+ * Builds default metadata for a tooling definition.
+ * @param {object} [options] Tooling definition overrides.
+ * @returns {object} Tooling defaults.
  */
-exports.toolingDefaults = ({
-  name,
-  app = {},
-  cmd = name,
-  dir,
-  description = `Runs ${name} commands`,
-  env = {},
-  options = {},
-  service = '',
-  stdio = ['inherit', 'pipe', 'pipe'],
-  user = null,
-} = {}) =>
-  ({
+exports.toolingDefaults = (options = {}) => {
+  const {
     name,
-    app: app,
+    app = {},
+    cmd = name,
+    dir,
+    description = `Runs ${name} commands`,
+    env = {},
+    options: toolOptions = {},
+    service = '',
+    stdio = ['inherit', 'pipe', 'pipe'],
+    user = null,
+  } = options;
+
+  return {
+    name,
+    app,
     cmd: !_.isArray(cmd) ? [cmd] : cmd,
     dir,
     env,
     describe: description,
-    options: options,
-    service: service,
-    stdio: stdio,
+    options: toolOptions,
+    service,
+    stdio,
     user,
-  });
+  };
+};

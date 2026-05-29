@@ -6,6 +6,7 @@ const path = require('path');
 const utils = require('./lib/utils');
 
 // Default config values
+/** @type {object} */
 const defaultConfig = {
   proxy: 'ON',
   proxyName: 'landoproxyhyperion5000gandalfedition',
@@ -32,7 +33,11 @@ const defaultConfig = {
   proxyPassThru: true,
 };
 
-
+/**
+ * Registers proxy bootstrap hooks and default config.
+ * @param {object} lando Lando runtime instance.
+ * @returns {object} Plugin config contribution.
+ */
 module.exports = lando => {
   // Add in some computed config eg things after our config has been settled
   lando.events.on('post-bootstrap-config', ({config}) => {

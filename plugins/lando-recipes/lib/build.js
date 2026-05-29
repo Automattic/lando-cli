@@ -5,7 +5,11 @@ const _ = require('lodash');
 const path = require('path');
 const utils = require('./../../../lib/utils');
 
-// Helper to kill a run
+/**
+ * Builds a purge run descriptor used to clean up failed init containers.
+ * @param {object} config Engine run descriptor.
+ * @returns {object} Purge run descriptor.
+ */
 const killRun = config => ({
   id: config.id,
   compose: config.compose,
@@ -16,7 +20,11 @@ const killRun = config => ({
   },
 });
 
-// Helper to get a build array of run thingz
+/**
+ * Builds the engine run descriptor for recipe initialization.
+ * @param {object} config Run defaults and command metadata.
+ * @returns {object} Engine run descriptor.
+ */
 exports.buildRun = config => ({
   id: config.id,
   compose: config.compose,
@@ -30,14 +38,24 @@ exports.buildRun = config => ({
   },
 });
 
-// Helper to run
+/**
+ * Runs recipe initialization and cleans up failed init containers.
+ * @param {object} lando Lando runtime instance.
+ * @param {object} run Engine run descriptor.
+ * @returns {Promise} Promise for the recipe init workflow.
+ */
 exports.run = (lando, run) => lando.engine.run(run).catch(err => {
   return lando.engine.stop(killRun(run))
       .then(() => lando.engine.destroy(killRun(run)))
       .then(() => lando.Promise.reject(err));
 });
 
-// Helper to get run defaults
+/**
+ * Builds default run settings for recipe initialization.
+ * @param {object} lando Lando runtime instance.
+ * @param {object} options Init command options.
+ * @returns {object} Default run descriptor.
+ */
 exports.runDefaults = (lando, options) => {
   // Handle all the compose stuff
   const LandoInit = lando.factory.get('_init');
