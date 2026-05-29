@@ -117,7 +117,7 @@ exports.getServiceConfig = (options, types = ['php', 'server', 'vhosts']) => {
 /**
  * Expands recipe config into the normalized object used by the factory.
  * @param {string} recipe Recipe name.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @returns {object} Normalized recipe config.
  */
 exports.parseConfig = (recipe, app) => _.merge({}, _.get(app, 'config.config', {}), {

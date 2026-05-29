@@ -103,7 +103,7 @@ exports.getConfig = (data = [], name) => _.find(data, {name});
 /**
  * Merges dynamic option config from all init plugins.
  * @param {object[]} all Init plugin configs.
- * @param {object} lando Lando runtime instance.
+ * @param {import('../../../lib/lando')} lando Lando runtime instance.
  * @param {object} [options] Existing options.
  * @returns {object} Merged option config.
  */

@@ -8,7 +8,7 @@ const path = require('path');
 /**
  * Adds build commands to a service-specific build section.
  * @param {string|string[]} steps Commands to add.
- * @param {object} app App config container.
+ * @param {import('../../../lib/app')} app App config container.
  * @param {string} name Service name.
  * @param {string} [step] Build section name.
  * @param {boolean} [front] Whether to prepend the new steps.
@@ -47,7 +47,7 @@ exports.getInstallCommands = (deps, pkger, prefix = []) => _(deps)
 /**
  * Expands configured build sections into engine run tasks.
  * @param {string[]} services Service names to inspect.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @param {string[]} [rootSteps] Build sections that must run as root.
  * @param {string[]} [buildSteps] User build sections.
  * @param {boolean} [prestart] Whether the tasks run before container startup.
@@ -109,7 +109,7 @@ exports.filterBuildSteps = (services, app, rootSteps = [], buildSteps= [], prest
 /**
  * Normalizes service config into factory-ready service definitions.
  * @param {object} config Service config keyed by service name.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @returns {object[]} Normalized service definitions.
  */
 exports.parseConfig = (config, app) => _(config)
@@ -136,7 +136,7 @@ exports.parseConfig = (config, app) => _(config)
 
 /**
  * Runs build steps and writes the successful lock hash to cache.
- * @param {object} app App instance.
+ * @param {import('../../../lib/app')} app App instance.
  * @param {object[]} steps Engine run tasks.
  * @param {string} lockfile Cache key for the build lock.
  * @param {string} [hash] Hash value to persist on success.
