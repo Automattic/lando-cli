@@ -25,7 +25,7 @@ Run the following commands to validate things are rolling as they should.
 
 ```bash
 # Should be able to run django-admin without errors
-lando django-admin --version | grep "^2."
+lando django-admin --version | grep "^4."
 ```
 
 Destroy tests
