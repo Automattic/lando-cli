@@ -97,7 +97,7 @@
     }
   },
   "dependencies": {
-    "axios": "^1.16.1",
+    "axios": "^1.17.0",
     "bluebird": "^3.4.1",
     "chalk": "^4.1.2",
     "cli-table3": "^0.6.5",
