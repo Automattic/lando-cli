@@ -6,8 +6,16 @@ const _ = require('lodash');
 /*
  * Helper to get core proxy service
  */
-const getProxy = ({proxyCommand, proxyPassThru, proxyDomain, userConfRoot, version = 'unknown'} = {}) => {
-  return {
+const getProxy = ({
+  proxyCommand,
+  proxyPassThru,
+  proxyDomain,
+  userConfRoot,
+  version = 'unknown',
+  proxySocket = {},
+} = {}) => {
+  const {source: proxySocketSource = '/var/run/docker.sock', selinuxLabelDisable = false} = proxySocket;
+  const proxy = {
     services: {
       proxy: {
         image: 'ghcr.io/automattic/vip-container-images/traefik_openssl:v3',
@@ -21,7 +29,7 @@ const getProxy = ({proxyCommand, proxyPassThru, proxyDomain, userConfRoot, versi
         },
         networks: ['edge'],
         volumes: [
-          '/var/run/docker.sock:/var/run/docker.sock',
+          `${proxySocketSource}:/var/run/docker.sock`,
           `${userConfRoot}/scripts/proxy-certs.sh:/scripts/100-proxy-certs`,
           'proxy_config:/proxy_config',
         ],
@@ -36,22 +44,31 @@ const getProxy = ({proxyCommand, proxyPassThru, proxyDomain, userConfRoot, versi
       proxy_config: {},
     },
   };
+
+  if (selinuxLabelDisable) {
+    proxy.services.proxy.security_opt = ['label=disable'];
+  }
+
+  return proxy;
 };
 
 /*
  * Helper to get proxy ports service
  */
-const getPorts = (http, https, {proxyBindAddress = '127.0.0.1'} = {}) => ({
-  services: {
-    proxy: {
-      ports: [
-        [proxyBindAddress, http, '80'].join(':'),
-        [proxyBindAddress, https, '443'].join(':'),
-        `${proxyBindAddress}::8080`,
-      ],
+const getPorts = (http, https, {proxyBindAddress = '127.0.0.1', proxyPublishAddress} = {}) => {
+  const publishAddress = proxyPublishAddress || proxyBindAddress;
+  return {
+    services: {
+      proxy: {
+        ports: [
+          [publishAddress, http, '80'].join(':'),
+          [publishAddress, https, '443'].join(':'),
+          `${publishAddress}::8080`,
+        ],
+      },
     },
-  },
-});
+  };
+};
 
 /*
  * Build traefix proxis
