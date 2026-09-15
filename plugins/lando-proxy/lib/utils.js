@@ -250,7 +250,7 @@ exports.parseUrl = data => {
   let parsedUrl;
   if (typeof data === 'string') {
     const u = new URL(`http://${data}`);
-    parsedUrl = url.urlToHttpOptions(u);
+    parsedUrl = {...url.urlToHttpOptions(u)};
     ['port', 'hash', 'search'].forEach(prop => {
       parsedUrl[prop] ||= null;
     });
