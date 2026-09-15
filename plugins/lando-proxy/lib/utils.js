@@ -247,16 +247,28 @@ exports.parseUrl = data => {
   // We add the protocol ourselves, so it can be parsed. We also change all *
   // occurrences for our magic word __wildcard__, because otherwise the url parser
   // won't parse wildcards in the hostname correctly.
-  const parsedUrl = _.isString(data) ? url.parse(`http://${data}`.replace(/\*/g, '__wildcard__')) : _.merge({}, data, {
-    hostname: data.hostname.replace(/\*/g, '__wildcard__'),
-  });
+  let parsedUrl;
+  if (typeof data === 'string') {
+    const u = new URL(`http://${data}`);
+    parsedUrl = {...url.urlToHttpOptions(u)};
+    ['port', 'hash', 'search'].forEach(prop => {
+      parsedUrl[prop] ||= null;
+    });
+    parsedUrl.query = u.searchParams.toString();
+    if (parsedUrl.port) {
+      parsedUrl.port = parsedUrl.port.toString();
+    }
+    parsedUrl.host = u.host;
+  } else {
+    parsedUrl = {...data};
+  }
 
   // If the port is null then set it to 80
   if (_.isNil(parsedUrl.port)) parsedUrl.port = '80';
 
   // Retranslate and send
   const defaults = {port: '80', pathname: '/', middlewares: []};
-  return _.merge(defaults, parsedUrl, {host: parsedUrl.hostname.replace(/__wildcard__/g, '*')});
+  return _.merge(defaults, parsedUrl, {host: parsedUrl});
 };
 
 /**
