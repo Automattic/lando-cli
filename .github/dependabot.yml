@@ -8,6 +8,10 @@ updates:
     open-pull-requests-limit: 10
     commit-message:
       prefix: "deps"
+    ignore:
+      # Chalk 5+ is ESM-only; the CLI needs CommonJS for Node 18 and pkg.
+      - dependency-name: "chalk"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
