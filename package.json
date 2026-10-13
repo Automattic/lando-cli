@@ -126,7 +126,7 @@
     "eslint": "^10.7.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jsdoc": "^65.2.4",
-    "globals": "^17.7.0",
+    "globals": "^17.13.0",
     "leia-parser": "^0.4.0",
     "mocha": "^12.0.1",
     "mock-fs": "^5.2.0",
