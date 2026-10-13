@@ -15,7 +15,6 @@ const os = require('os');
 const path = require('path');
 const sinon = require('sinon');
 const Shell = require('./../lib/shell');
-chai.use(require('sinon-chai'));
 chai.use(require('chai-as-promised'));
 chai.should();
 

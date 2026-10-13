@@ -8,8 +8,6 @@
 const _ = require('lodash');
 const chai = require('chai');
 const sinon = require('sinon');
-const sinonChai = require('sinon-chai');
-chai.use(sinonChai);
 chai.should();
 
 const AsyncEvents = require('../lib/events');
@@ -53,10 +51,11 @@ describe('events', () => {
       events.on('event', 4, before);
       events.on('event', middle);
       events.on('event', 6, after);
-      events.emit('event').then(() => {
-        before.should.be.calledBefore(middle);
-        middle.should.be.calledBefore(after);
-        after.should.be.calledAfter(middle);
+      return events.emit('event').then(() => {
+        sinon.assert.calledOnce(before);
+        sinon.assert.calledOnce(middle);
+        sinon.assert.calledOnce(after);
+        sinon.assert.callOrder(before, middle, after);
       });
     });
   });
@@ -74,7 +73,7 @@ describe('events', () => {
         data.maneuver.should.equal('little');
         data.should.not.be.empty;
       });
-      events.emit('battle-of-tanaab', data);
+      return events.emit('battle-of-tanaab', data);
     });
   });
 });
