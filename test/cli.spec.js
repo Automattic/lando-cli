@@ -12,7 +12,7 @@ const Cli = require('./../lib/cli');
 const {execFileSync} = require('child_process');
 const path = require('path');
 const sinon = require('sinon');
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 chai.should();
 
 // Take task

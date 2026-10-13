@@ -15,7 +15,7 @@ const os = require('os');
 const path = require('path');
 const sinon = require('sinon');
 const Shell = require('./../lib/shell');
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 chai.should();
 
 // Return mock error code based on commands

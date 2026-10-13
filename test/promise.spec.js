@@ -8,7 +8,7 @@
 const _ = require('lodash');
 const chai = require('chai');
 const sinon = require('sinon');
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 chai.should();
 
 // eslint-disable-next-line no-redeclare

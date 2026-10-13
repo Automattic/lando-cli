@@ -12,7 +12,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const Lando = require('./../lib/lando');
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 chai.should();
 
 // This is the file we are testing

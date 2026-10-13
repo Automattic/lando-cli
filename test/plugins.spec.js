@@ -11,7 +11,7 @@ const chai = require('chai');
 const sinon = require('sinon');
 const expect = chai.expect;
 const filesystem = require('mock-fs');
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 chai.should();
 const os = require('os');
 const path = require('path');
