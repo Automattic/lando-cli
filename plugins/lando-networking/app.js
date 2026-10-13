@@ -25,8 +25,8 @@ module.exports = (app, lando) => {
                 if (!_.includes(error.message, 'is not connected to network lando')) throw error;
               })
           // Connect
+              .then(() => landonet.connect({Container: container.id, EndpointConfig: {Aliases: [internalAlias]}}))
               .then(() => {
-                landonet.connect({Container: container.id, EndpointConfig: {Aliases: [internalAlias]}});
                 app.log.debug('connected %s to the landonet', container.name);
               });
         });
@@ -70,8 +70,8 @@ module.exports = (app, lando) => {
               if (!_.includes(error.message, 'is not connected to network lando')) throw error;
             })
         // Connect
+            .then(() => bridgeNet.connect({Container: proxyContainer, EndpointConfig: {Aliases: aliases}}))
             .then(() => {
-              bridgeNet.connect({Container: proxyContainer, EndpointConfig: {Aliases: aliases}});
               app.log.debug('aliased %j to the proxynet', aliases);
             });
       });
