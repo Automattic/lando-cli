@@ -35,8 +35,13 @@ lando db-import -h database2 test2.sql
 lando psqlverify | grep users
 
 # Should be able to export the contents of the dbs
+rm -f database.*.sql database.*.sql.gz
 lando db-export
+gzip -t database.*.sql.gz
+rm database.*.sql.gz
 lando db-export -h database2
+gzip -t database.*.sql.gz
+rm database.*.sql.gz
 
 # Should export to filename if specified
 lando db-export database.dump.sql
