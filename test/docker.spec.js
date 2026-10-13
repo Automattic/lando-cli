@@ -47,6 +47,8 @@ const dummyContainer = (overrides = {}) => {
 };
 
 describe('docker', () => {
+  afterEach(() => sinon.restore());
+
   describe('#Landerode', () => {
     it('should inherit things from Dockerode', () => {
       expect(Landerode.prototype).to.be.an.instanceOf(Dockerode);
@@ -56,11 +58,9 @@ describe('docker', () => {
   describe('#createNetwork', () => {
     it('should merge name correctly into opts', () => {
       const stub = sinon.stub(landerode, 'createNetwork')
-          .usingPromise(Promise)
-          .resolves();
+          .callsFake(() => Promise.resolve());
       return landerode.createNet('elthree', {}).then(() => {
-        // for some reason should/expect doesn't work here...
-        stub.calledWith({Name: 'elthree'});
+        sinon.assert.calledOnceWithExactly(stub, {Name: 'elthree', Attachable: true, Internal: true});
         stub.restore();
       });
     });
@@ -170,11 +170,10 @@ describe('docker', () => {
 
     it('should filter out any containers that are pending removal', () => {
       const listStub = sinon.stub(landerode, 'listContainers')
-          .usingPromise(Promise)
-          .resolves([
+          .callsFake(() => Promise.resolve([
             dummyContainer({Status: 'Being Awesome'}),
             dummyContainer({Status: 'Removal In Progress'}),
-          ]);
+          ]));
       return landerode.list()
           .should.eventually.be.an('Array').with.a.lengthOf(1)
           .then(() => {
@@ -184,11 +183,10 @@ describe('docker', () => {
 
     it('should remove any "null" containers', () => {
       const listStub = sinon.stub(landerode, 'listContainers')
-          .usingPromise(Promise)
-          .resolves([
+          .callsFake(() => Promise.resolve([
             null,
             dummyContainer({identity: 'Solo'}),
-          ]);
+          ]));
 
       return landerode.list()
           .should.eventually.be.an('Array').with.a.lengthOf(1)
@@ -199,11 +197,10 @@ describe('docker', () => {
 
     it('should filter out non-lando containers', () => {
       const listStub = sinon.stub(landerode, 'listContainers')
-          .usingPromise(Promise)
-          .resolves([
+          .callsFake(() => Promise.resolve([
             dummyContainer({Labels: {'io.lando.container': 'FALSE'}}),
             dummyContainer(),
-          ]);
+          ]));
 
       return landerode.list()
           .should.eventually.be.an('Array').with.a.lengthOf(1)
@@ -214,8 +211,7 @@ describe('docker', () => {
 
     it('should filter by app name if given', () => {
       const listStub = sinon.stub(landerode, 'listContainers')
-          .usingPromise(Promise)
-          .resolves([
+          .callsFake(() => Promise.resolve([
             dummyContainer({Labels: {
               'com.docker.compose.project': 'alderaan',
               'com.docker.compose.service': 'Rescue Mission',
@@ -227,7 +223,7 @@ describe('docker', () => {
               'io.lando.src': '/tmp/.lando.yml',
             }}),
             dummyContainer(),
-          ]);
+          ]));
 
       return landerode.list({app: 'alderaan'})
           .should.eventually.be.an('Array').with.a.lengthOf(1)
@@ -236,14 +232,10 @@ describe('docker', () => {
           });
     });
 
-    it('should throw an error on all other catches', () => {
-      const container = dummyContainer();
-      delete container.lando;
-      const listStub = sinon.stub(landerode, 'listContainers').resolves([container]);
-
-      const fail = () => landerode.list();
-      expect(fail).to.throw();
-      return listStub.restore();
+    it('should reject when listing containers fails', () => {
+      sinon.stub(landerode, 'listContainers')
+          .callsFake(() => Promise.reject(new Error('Docker list failed')));
+      return landerode.list().should.be.rejectedWith('Docker list failed');
     });
 
     afterEach(() => {
@@ -257,10 +249,9 @@ describe('docker', () => {
 
       const getStub = sinon.stub(landerode, 'getContainer').returns(container);
       const removeStub = sinon.stub(container, 'remove')
-          .usingPromise(Promise)
-          .rejects('Oh No!');
+          .callsFake(() => Promise.reject(new Error('Oh No!')));
 
-      landerode.remove('1234').should.be.rejectedWith('Oh No!')
+      return landerode.remove('1234').should.be.rejectedWith('Oh No!')
           .then(() => {
             getStub.restore();
             removeStub.restore();
