@@ -63,24 +63,27 @@ describe('cli', () => {
   });
 
   describe('#argv', () => {
-    it('should be the same as yargs.argv', () => {
+    it('should return parsed CLI arguments', () => {
       const cli = new Cli();
-      cli.argv().should.deep.equal(require('yargs').argv);
+      cli.argv().should.be.an('object');
+      cli.argv()._.should.be.an('array');
     });
 
     it('should parse command arguments and flags without handling help or version', () => {
       const script = [
-        'process.argv = ["node", "lando", "task", "quoted value", "--clear", "-v", "--help", "--version"];',
+        'process.argv = ["node", "lando", "task", "quoted value", "--clear", "-vvv", "--help", "--version"];',
         'const Cli = require("./lib/cli");',
-        'console.log(JSON.stringify(new Cli().argv()));',
+        'const cli = new Cli();',
+        'console.log(JSON.stringify({argv: cli.argv(), logLevel: cli.defaultConfig().logLevelConsole}));',
       ].join('\n');
       const output = execFileSync(process.execPath, ['-e', script], {
         cwd: path.resolve(__dirname, '..'),
         encoding: 'utf8',
       });
-      const argv = JSON.parse(output);
+      const {argv, logLevel} = JSON.parse(output);
       argv._.should.deep.equal(['task', 'quoted value']);
-      argv.should.include({clear: true, v: true, help: true, version: true});
+      argv.should.include({clear: true, v: 3, verbose: 3, help: true, version: true});
+      logLevel.should.equal(4);
     });
   });
 
