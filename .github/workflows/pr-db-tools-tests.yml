@@ -50,6 +50,8 @@ jobs:
           sed -i 's!bitnami/mysql:8.0.19-debian-10-r57!bitnami/mysql:8.0.19-r6!' node_modules/@lando/mysql/services/mysql/builder.js
           sed -i 's!-debian-10-r9!!' node_modules/@lando/postgres/services/postgres/builder.js
           sed -i -r 's!bitnami/([a-z0-9]+:)!bitnamilegacy/\1!' node_modules/@lando/*/services/*/builder.js
+          # Legacy nginx images already bundle render-template; avoid the obsolete Bitnami download.
+          sed -i 's@if \[ -f "/opt/bitnami/scripts/libcomponent.sh" \]; then@if ! command -v render-template >/dev/null 2>\&1 \&\& [ -f "/opt/bitnami/scripts/libcomponent.sh" ]; then@' node_modules/@lando/nginx/services/nginx/launch.sh
           npm run build:cli
       - name: Replace source CLI with packaged one
         run: sudo mv ./dist/@lando/cli /usr/local/bin/lando
