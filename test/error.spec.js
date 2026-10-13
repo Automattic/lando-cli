@@ -10,7 +10,7 @@ const ErrorHandler = require('./../lib/error');
 const EventEmitter = require('events').EventEmitter;
 const sinon = require('sinon');
 chai.should();
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 
 describe('error', () => {
   describe('#ErrorHandler', () => {

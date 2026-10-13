@@ -10,7 +10,7 @@ const chai = require('chai');
 const expect = chai.expect;
 const filesystem = require('mock-fs');
 chai.should();
-chai.use(require('chai-as-promised'));
+chai.use(require('chai-as-promised').default);
 const sinon = require('sinon');
 const Landerode = require('./../lib/docker');
 const landerode = new Landerode();
