@@ -9,6 +9,8 @@
 const _ = require('lodash');
 const chai = require('chai');
 const Cli = require('./../lib/cli');
+const {execFileSync} = require('child_process');
+const path = require('path');
 const sinon = require('sinon');
 chai.use(require('chai-as-promised'));
 chai.should();
@@ -65,6 +67,21 @@ describe('cli', () => {
       const cli = new Cli();
       cli.argv().should.deep.equal(require('yargs').argv);
     });
+
+    it('should parse command arguments and flags without handling help or version', () => {
+      const script = [
+        'process.argv = ["node", "lando", "task", "quoted value", "--clear", "-v", "--help", "--version"];',
+        'const Cli = require("./lib/cli");',
+        'console.log(JSON.stringify(new Cli().argv()));',
+      ].join('\n');
+      const output = execFileSync(process.execPath, ['-e', script], {
+        cwd: path.resolve(__dirname, '..'),
+        encoding: 'utf8',
+      });
+      const argv = JSON.parse(output);
+      argv._.should.deep.equal(['task', 'quoted value']);
+      argv.should.include({clear: true, v: true, help: true, version: true});
+    });
   });
 
   describe('#defaultConfig', () => {
@@ -115,10 +132,46 @@ describe('cli', () => {
   });
 
   describe('#run', () => {
-    it('should return a yargs cli', () => {
+    it('should return a yargs cli', async () => {
       const cli = new Cli();
       const task = cli.parseToYargs({command: 'task', describe: 'desc'});
-      cli.run([task]);
+      await cli.run([task]);
+    });
+
+    it('should show registered commands for global help without invoking a handler', () => {
+      const script = [
+        'process.argv = ["node", "lando", "--help"];',
+        'const Cli = require("./lib/cli");',
+        'const cli = new Cli();',
+        'cli.updateUserConfig = () => ({});',
+        'cli.run([{command: "task", describe: "Test command", handler: () => console.log("HANDLER_RAN")}]);',
+      ].join('\n');
+      const output = execFileSync(process.execPath, ['-e', script], {
+        cwd: path.resolve(__dirname, '..'),
+        encoding: 'utf8',
+      });
+      output.should.include('Test command');
+      output.should.include('--verbose');
+      output.should.not.include('HANDLER_RAN');
+    });
+  });
+
+  describe('#init', () => {
+    it('should await an async command handler and invoke it once', async () => {
+      const cli = new Cli();
+      const yargs = require('yargs/yargs')(['task', '-vvv']);
+      let calls = 0;
+      const task = {
+        command: 'task',
+        handler: async argv => {
+          await Promise.resolve();
+          calls += 1;
+          argv.verbose.should.equal(3);
+        },
+      };
+      const argv = await cli.init(yargs, [task], {}, {});
+      calls.should.equal(1);
+      argv._.should.deep.equal(['task']);
     });
   });
 });
