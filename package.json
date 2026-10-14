@@ -55,6 +55,7 @@
     "assets": [
       "config.yml",
       "package.json",
+      "lib/esm/package.json",
       "node_modules/@lando/**/fastcgi_params",
       "node_modules/@lando/**/*.cnf",
       "node_modules/@lando/**/*.conf",
@@ -89,6 +90,14 @@
       "plugins/**/*.yml"
     ],
     "dictionary": {
+      "string-argv": {
+        "patches": {
+          "package.json": [
+            "\"import\": \"./index.js\"",
+            "\"require\": \"./index.js\", \"import\": \"./index.js\""
+          ]
+        }
+      },
       "axios": {
         "scripts": [
           "dist/node/axios.cjs"
@@ -111,7 +120,7 @@
     "object-hash": "^3.0.0",
     "semver": "^7.8.5",
     "shelljs": "^0.10.0",
-    "string-argv": "0.3.2",
+    "string-argv": "0.4.0",
     "transliteration": "^2.6.1",
     "winston": "^3.11.0",
     "yargs": "^17.7.3"
