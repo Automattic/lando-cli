@@ -16,6 +16,16 @@ describe('utils', () => {
           .to.deep.equal(['echo', '']);
     });
 
+    it('should keep adjacent quoted and unquoted segments in one argument', () => {
+      expect(utils.shellEscape('echo a" b" "a"b', false, ['extra']))
+          .to.deep.equal(['echo', 'a b', 'ab']);
+    });
+
+    it('should strip quotes inside option values', () => {
+      expect(utils.shellEscape('echo --name="Phil Taylor"', false, ['extra']))
+          .to.deep.equal(['echo', '--name=Phil Taylor']);
+    });
+
     it('should wrap shell operators after parsing a string command', () => {
       expect(utils.shellEscape('echo hello && echo world', true, ['extra']))
           .to.deep.equal(['/bin/sh', '-c', 'echo hello && echo world']);

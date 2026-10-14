@@ -35,4 +35,8 @@ export default [
       'require-jsdoc': 'off',
     }
   },
+  {
+    files: ['lib/esm/**/*.js'],
+    languageOptions: {sourceType: 'module'},
+  },
 ];
