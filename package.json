@@ -90,6 +90,37 @@
       "plugins/**/*.yml"
     ],
     "dictionary": {
+      "string-width": {
+        "patches": {
+          "index.js": [
+            "const segmenter = new Intl.Segmenter();",
+            "const segmenter = {segment: require('unicode-segmenter/grapheme').graphemeSegments};"
+          ]
+        }
+      },
+      "yargs": {
+        "assets": [
+          "locales/*.json"
+        ],
+        "patches": {
+          "package.json": [
+            ".mjs",
+            ".js"
+          ],
+          "lib/platform-shims/esm.mjs": [
+            "__dirname",
+            "shimFilename"
+          ]
+        }
+      },
+      "cliui": {
+        "patches": {
+          "package.json": [
+            ".mjs",
+            ".js"
+          ]
+        }
+      },
       "string-argv": {
         "patches": {
           "package.json": [
@@ -122,6 +153,7 @@
     "shelljs": "^0.10.0",
     "string-argv": "0.4.0",
     "transliteration": "^2.6.1",
+    "unicode-segmenter": "^0.17.3",
     "winston": "^3.11.0",
     "yargs": "^18.2.0"
   },
