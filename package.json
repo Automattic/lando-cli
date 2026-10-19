@@ -5,11 +5,10 @@
   "version": "3.6.5",
   "repository": {
     "type": "git",
-    "url": "https://github.com/lando/cli"
+    "url": "https://github.com/Automattic/lando-cli"
   },
   "bugs": {
-    "email": "mike@lando.dev",
-    "url": "https://github.com/lando/cli/issues"
+    "url": "https://github.com/Automattic/lando-cli/issues"
   },
   "engines": {
     "node": ">=22.23.2"
