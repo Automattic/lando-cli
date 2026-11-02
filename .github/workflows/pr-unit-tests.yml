@@ -7,13 +7,16 @@ jobs:
   unit-tests:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os:
           - windows-latest
           - ubuntu-latest
           - macos-latest
         node-version:
-          - lts/*
+          # mock-fs 5.5.0 cannot initialize on Node 26.
+          - '22.23.2'
+          - '24.x'
     steps:
 
       # Install deps and cache
@@ -32,3 +35,27 @@ jobs:
       # Run unit tests
       - name: Run unit tests
         run: npm run test:unit
+
+  discovery-tests:
+    name: Discovery tests (${{ matrix.os }}, Node 26)
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Install Node 26
+        uses: actions/setup-node@v7
+        with:
+          node-version: '26.x'
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      # These tests use temporary real files, without loading mock-fs.
+      - name: Run filesystem-backed discovery tests
+        run: node node_modules/mocha/bin/mocha.js --timeout 10000 test/discovery.spec.js
