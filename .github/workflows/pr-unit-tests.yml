@@ -37,7 +37,7 @@ jobs:
         run: npm run test:unit
 
   discovery-tests:
-    name: Discovery tests (${{ matrix.os }}, Node 26)
+    name: Runtime tests (${{ matrix.os }}, Node 26)
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -57,5 +57,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
       # These tests use temporary real files, without loading mock-fs.
-      - name: Run filesystem-backed discovery tests
-        run: node node_modules/mocha/bin/mocha.js --timeout 10000 test/discovery.spec.js
+      - name: Run runtime tests without mock-fs
+        run: node node_modules/mocha/bin/mocha.js --timeout 10000 test/discovery.spec.js test/bootstrap-engine.spec.js
