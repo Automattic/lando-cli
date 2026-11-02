@@ -16,6 +16,8 @@ chai.should();
 const os = require('os');
 const path = require('path');
 const Plugins = require('./../lib/plugins');
+// Load the lazy matcher before mock-fs hides node_modules.
+require('fast-glob');
 
 const testPlugin = `module.exports = injected => ({'plugin-test': true});`;
 const searchDirs = [
@@ -41,7 +43,7 @@ describe('plugins', () => {
     it('should use the plugin from the last location it finds it', () => {
       const plugins = new Plugins();
       const find = plugins.find(searchDirs);
-      expect(_.includes(find[0].path, path.join('cli', 'plugins'))).to.be.true;
+      expect(path.normalize(find[0].path)).to.equal(path.join(searchDirs[2], 'plugins', 'lando-test', 'index.js'));
     });
 
     it('should push a plugin to the plugin registry after it is loaded', () => {
